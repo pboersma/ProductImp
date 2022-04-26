@@ -1,0 +1,32 @@
+[
+    {
+        "route": "/gatekeeper/store",
+        "methods": "POST",
+        "class": "lmwcwppi_Authorization_Gatekeeper",
+        "callback": "storeAuthKey"
+    },
+    {
+        "route": "/gatekeeper/generate",
+        "methods": "GET",
+        "class": "lmwcwppi_Authorization_Gatekeeper",
+        "callback": "generateAuthKey"
+    },
+    {
+        "route": "/gatekeeper/authorized",
+        "methods": "GET",
+        "class": "lmwcwppi_Authorization_Gatekeeper",
+        "callback": "isAuthorized"
+    },
+    {
+        "route": "/products/list",
+        "methods": "GET",
+        "class": "lmwcwppi_Controllers_ProductController",
+        "callback": "list"
+    },
+    {
+        "route": "/datasources/list",
+        "methods": "GET",
+        "class": "lmwcwppi_Controllers_DataSourceController",
+        "callback": "list"
+    }
+   ]
