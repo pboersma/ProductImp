@@ -86,7 +86,7 @@ export default {
       this.modalOpen = false;
     },
     async fetchDataSources() {
-      await axios.get('https://lycan-media.nl/wp-json/ntwcwppi/v1/datasources')
+      await axios.get('https://lycan-media.nl/wp-json/productimp/v1/datasources')
         .then(response => {
           this.dataSources = response.data;
         })

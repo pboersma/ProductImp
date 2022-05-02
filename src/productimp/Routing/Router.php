@@ -11,7 +11,7 @@ class productimp_Routing_Router {
     public function add_route($route)
     {
         register_rest_route(
-            'ntwcwppi/v1',
+            'productimp/v1',
             $route['route'],
             [
               'methods' => $route['methods'],

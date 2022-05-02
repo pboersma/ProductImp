@@ -13,7 +13,7 @@ class productimp_Authorization_Gatekeeper {
       'scope' => 'read_write',
       'user_id' => 1, // Current Logged in Userid
       'return_url' => $ntwcwp_current_url,
-      'callback_url' => $ntwcwp_current_url . '/wp-json/ntwcwppi/v1/gatekeeper/store' //Callback URL for storing data.
+      'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/gatekeeper/store' //Callback URL for storing data.
     ];
 
     $authentication_url = $ntwcwp_current_url . $endpoint . '?' . http_build_query($params);

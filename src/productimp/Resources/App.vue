@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="text-2xl mb-6 mt-6">Product Importer <a v-if="!authorized" href="https://lycan-media.nl/wp-json/ntwcwppi/v1/gatekeeper/generate">Authorize</a></h1>
+    <h1 class="text-2xl mb-6 mt-6">Product Importer <a v-if="!authorized" href="https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/generate">Authorize</a></h1>
     <div class="bg-white" v-if="authorized">
       <nav class="flex flex-col sm:flex-row">
         <button
@@ -62,7 +62,7 @@ export default {
   },
   mounted() {
     const self = this;
-    axios.get("https://lycan-media.nl/wp-json/ntwcwppi/v1/gatekeeper/authorized")
+    axios.get("https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/authorized")
       .then(response => {
         if(response.data.status === 401) {
           this.error = response.data.message;

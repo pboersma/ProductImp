@@ -56,7 +56,7 @@ export default {
 
           // Make a request for a user with a given ID
           // @TODO: Change URL to datasources/get to get Datasource Credentials & URL
-          await axios.get('https://lycan-media.nl/wp-json/ntwcwppi/v1/datasources/create')
+          await axios.get('https://lycan-media.nl/wp-json/productimp/v1/datasources/create')
           .then(async function (response) {
             self.productQueu.push({id: currentId++, message: "Retrieved Data from Data Source"}); 
             self.products = response.data;
@@ -68,11 +68,11 @@ export default {
           // @TODO: Check if Products already exist
 
           // Start Import into WP Database.
-          this.productQueu.push({id: currentId++, message: "Importing Products into NTWCWPPI"})
+          this.productQueu.push({id: currentId++, message: "Importing Products into productimp"})
 
           // Map Product Data & Push mapped products into WP Database
           this.products.map(async function(value, key){
-            await axios.post('https://lycan-media.nl/wp-json/ntwcwppi/v1/products/add', { data_source_id: 1, data: value })
+            await axios.post('https://lycan-media.nl/wp-json/productimp/v1/products/add', { data_source_id: 1, data: value })
             .then(async function (response) {
               currentId++
               self.productQueu.push({id: currentId++, message: value.Productnaam_NL})

@@ -24,12 +24,12 @@ class productimp_Controllers_ProductController implements productimp_Controllers
         }
 
         $offset = ($pageno - 1) * $productListLimit;
-        $totalOfProducts = $wpdb->get_var("SELECT COUNT(*) FROM wp_ntwcwppi_products");
+        $totalOfProducts = $wpdb->get_var("SELECT COUNT(*) FROM wp_productimp_products");
         $totalOfPages = ceil($totalOfProducts / $productListLimit);
 
         return [
             "totalPages" => $totalOfPages,
-            "products" => $wpdb->get_results("SELECT * FROM wp_ntwcwppi_products LIMIT $offset, $productListLimit")
+            "products" => $wpdb->get_results("SELECT * FROM wp_productimp_products LIMIT $offset, $productListLimit")
         ];
     }
 }
