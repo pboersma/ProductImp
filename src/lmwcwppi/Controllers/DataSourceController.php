@@ -1,6 +1,6 @@
 <?php
 
-class lmwcwppi_Controllers_DataSourceController implements lmwcwppi_Controllers_Interfaces_iController  {
+class productimp_Controllers_DataSourceController implements productimp_Controllers_Interfaces_iController  {
     public function list(): Array
     {
         return [];

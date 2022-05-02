@@ -1,6 +1,6 @@
 <?php
 
-class lmwcwppi_Authorization_Gatekeeper {
+class productimp_Authorization_Gatekeeper {
 
   public function generateAuthKey()
   {
@@ -43,13 +43,13 @@ class lmwcwppi_Authorization_Gatekeeper {
       exit;
     }
 
-    add_option("lmwcwppi_rest", json_encode($dataToStore));
+    add_option("productimp_rest", json_encode($dataToStore));
   }
 
 
   public function isAuthorized()
   {
-    $wooCommerceAuthorized = get_option("lmwcwppi_rest");
+    $wooCommerceAuthorized = get_option("productimp_rest");
 
     // If no Access token is present, Return Unauthorized error.
     if(!$wooCommerceAuthorized) {

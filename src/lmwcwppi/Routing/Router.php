@@ -1,6 +1,6 @@
 <?php
 
-class lmwcwppi_Routing_Router {
+class productimp_Routing_Router {
     private $routesFile = 'Config/routes.json';
 
     public function get_routes()

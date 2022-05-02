@@ -1,18 +1,18 @@
 <?php
 
-class lmwcwppi_ProductImporter {
+class productimp_ProductImporter {
 
     /**
      * The plugin router.
      *
-     * @var lmwcwppi_Routing_Router
+     * @var productimp_Routing_Router
      */
     private $router;
 
     /**
      * The view maker.
      *
-     * @var lmwcwppi_Visualization_Viewmaker
+     * @var productimp_Visualization_Viewmaker
      */
     private $viewMaker;
 
@@ -21,8 +21,8 @@ class lmwcwppi_ProductImporter {
      */
     public function __construct()
     {
-        $this->router = new lmwcwppi_Routing_Router();
-        $this->viewMaker = new lmwcwppi_Visualization_Viewmaker();
+        $this->router = new productimp_Routing_Router();
+        $this->viewMaker = new productimp_Visualization_Viewmaker();
     }
 
     /**

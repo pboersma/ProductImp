@@ -1,8 +1,8 @@
 <?php
-class lmwcwppi_Autoloader
+class productimp_Autoloader
 {
     /**
-     * Registers lmwcwppi_Autoloader as an SPL autoloader.
+     * Registers productimp_Autoloader as an SPL autoloader.
      *
      * @param boolean $prepend
      */
@@ -16,13 +16,13 @@ class lmwcwppi_Autoloader
     }
 
     /**
-     * Handles autoloading of lmwcwppi classes.
+     * Handles autoloading of productimp classes.
      *
      * @param string $class
      */
     public static function autoload($class)
     {
-        if (0 !== strpos($class, 'lmwcwppi')) {
+        if (0 !== strpos($class, 'productimp')) {
             return;
         }
         
