@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="text-2xl mb-6 mt-6">Product Importer <a v-if="!authorized" href="https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/generate">Authorize</a></h1>
+    <h1 class="text-2xl mb-6 mt-6">Product Importer <a v-if="!authorized" :href='`${window.location.origin}/wp-json/productimp/v1/gatekeeper/generate`'>Authorize</a></h1>
     <div class="bg-white" v-if="authorized">
       <nav class="flex flex-col sm:flex-row">
         <button
