@@ -62,7 +62,8 @@ export default {
   },
   mounted() {
     const self = this;
-    console.log(window.location.href)
+    console.log(window.location)
+    // Move to Service file
     axios.get("https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/authorized")
       .then(response => {
         if(response.data.status === 401) {
