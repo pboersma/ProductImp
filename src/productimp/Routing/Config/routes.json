@@ -29,4 +29,4 @@
         "class": "productimp_Controllers_DataSourceController",
         "callback": "list"
     }
-   ]
+]
