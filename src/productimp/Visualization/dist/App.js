@@ -19272,10 +19272,8 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var self = this;
-    console.log(window.location); // Move to Service file
-
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get("https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/authorized").then(function (response) {
+    // Move to Service file
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(window.location.origin, "/wp-json/productimp/v1/gatekeeper/authorized")).then(function (response) {
       if (response.data.status === 401) {
         _this.error = response.data.message;
         return;

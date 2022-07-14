@@ -61,10 +61,8 @@ export default {
     },
   },
   mounted() {
-    const self = this;
-    console.log(window.location)
     // Move to Service file
-    axios.get("https://lycan-media.nl/wp-json/productimp/v1/gatekeeper/authorized")
+    axios.get(`${window.location.origin}/wp-json/productimp/v1/gatekeeper/authorized`)
       .then(response => {
         if(response.data.status === 401) {
           this.error = response.data.message;
