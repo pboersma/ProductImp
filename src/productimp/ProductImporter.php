@@ -32,9 +32,11 @@ class productimp_ProductImporter {
     {   
         // Initialize Rest API Routes
         add_action('rest_api_init', function () {
-            foreach ($this->get_routes() as $route) {
-                $this->router->add_route($route);
-            }
+            var_dump($this->get_routes());
+            die;
+            // foreach ($this->get_routes() as $route) {
+            //     $this->router->add_route($route);
+            // }
         });
 
         // Initialize MenuItem + View.
