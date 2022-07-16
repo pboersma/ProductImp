@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="text-2xl mb-6 mt-6">Product Importer <a v-if="!authorized" :href='authorizeUrl'>Authorize</a></h1>
+    {{ authorized }}
+    <!-- <h1 class="text-2xl mb-6 mt-6">
+      Product Importer <a v-if="!authorized" :href="authorizeUrl">Authorize</a>
+    </h1>
     <div class="bg-white" v-if="authorized">
       <nav class="flex flex-col sm:flex-row">
         <button
@@ -35,46 +38,33 @@
     </div>
     <div class="bg-white" v-else>
       {{ error }}
-    </div>
+    </div> -->
   </div>
 </template>
-<script>
-import axios from 'axios';
+<script setup lang="ts">
+import { reactive } from "vue";
+import { isAuthorized } from "./Services/AuthService";
+
+const authorized = reactive(isAuthorized);
+</script>
+
+
+<!-- import { onMounted, reactive, defineComponent } from '@vue/runtime-core';
 import DataSources from "./Pages/DataSources.vue";
 import Products from "./Pages/Products.vue";
+
+import { isAuthorized } from "./Services/AuthService";
 
 export default {
   components: {
     DataSources,
-    Products
+    Products,
   },
-  data() {
-    return {
-      currentPage: "products",
-      authorizeUrl: `${window.location.origin}/wp-json/productimp/v1/gatekeeper/generate`,
-      authorized: false,
-      error: null
-    };
-  },
-  methods: {
-    changePage(page) {
-      this.currentPage = page;
-    },
-  },
-  mounted() {
-    // Move to Service file
-    axios.get(`${window.location.origin}/wp-json/productimp/v1/gatekeeper/authorized`)
-      .then(response => {
-        if(response.data.status === 401) {
-          this.error = response.data.message;
-          return;
-        }
+  setup() {
+    const authorized = reactive(isAuthorized)
 
-        this.authorized = true;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-};
-</script>
+    return {
+        authorized
+    }
+  },
+}; -->
