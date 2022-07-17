@@ -33,18 +33,19 @@ class productimp_ProductImporter
         global $wpdb;
         $pipi_db_version = '1.0';
 
+        $table_name = $wpdb->prefix . 'liveshoutbox';
+	
         $charset_collate = $wpdb->get_charset_collate();
-
-        $sql = "create table 'pipi_datasources'
-        (
-            id                     int auto_increment,
-            datasource_name        varchar(255)            not null,
-            datasource_url         varchar(255)            not null,
-            created_on             timestamp default NOW() null,
-            constraint pipi_datasources_pk
-                primary key (id)
+    
+        $sql = "CREATE TABLE $table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            name tinytext NOT NULL,
+            text text NOT NULL,
+            url varchar(55) DEFAULT '' NOT NULL,
+            PRIMARY KEY  (id)
         ) $charset_collate;";
-
+    
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta( $sql );
 
