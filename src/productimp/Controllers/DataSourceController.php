@@ -19,7 +19,7 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
         }
 
         $offset = ($pageno - 1) * $limit;
-        $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_productimp_products");
+        $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_pipi_datasources");
         $total = ceil($totalDatasources / $limit);
 
         return [
