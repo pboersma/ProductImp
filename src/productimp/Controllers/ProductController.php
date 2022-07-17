@@ -8,7 +8,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
      * 
      * @return Array
      */
-    public function list(): array
+    public function list(WP_REST_Request $request): array
     {
         global $wpdb;
 
