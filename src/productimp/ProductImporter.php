@@ -33,7 +33,7 @@ class productimp_ProductImporter
         global $wpdb;
         $pipi_db_version = '1.0';
 
-        $table_name = $wpdb->prefix . '_pipi_datasources';
+        $table_name = $wpdb->prefix . 'pipi_datasources';
 
         $charset_collate = $wpdb->get_charset_collate();
 
