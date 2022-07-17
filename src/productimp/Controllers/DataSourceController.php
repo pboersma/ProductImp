@@ -2,9 +2,30 @@
 
 class productimp_Controllers_DataSourceController implements productimp_Controllers_Interfaces_iController
 {
-    public function list(): array
+    public function list(WP_REST_Request $request): Array
     {
-        return [];
+        global $wpdb;
+        // TODO: Can be a lot cleaner.
+        if (!isset($request['limit'])) {
+            $limit = 10;
+        } else {
+            $limit = $request['limit'];
+        }
+
+        if (isset($request['page'])) {
+            $pageno = $request['page'];
+        } else {
+            $pageno = 1;
+        }
+
+        $offset = ($pageno - 1) * $limit;
+        $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_productimp_products");
+        $total = ceil($totalDatasources / $limit);
+
+        return [
+            'total' => $total,
+            'data' => $wpdb->get_results("SELECT * FROM wp_pipi_datasources LIMIT $offset, $limit")
+        ];
     }
 
     /**
