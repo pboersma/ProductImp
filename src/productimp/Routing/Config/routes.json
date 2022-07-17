@@ -28,5 +28,11 @@
         "methods": "GET",
         "class": "productimp_Controllers_DataSourceController",
         "callback": "list"
+    },
+    {
+        "route": "/datasources/store",
+        "methods": "POST",
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "store"
     }
 ]

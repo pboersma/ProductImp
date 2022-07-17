@@ -6,8 +6,18 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
         return [];
     }
 
-    public function store()
+    /**
+     * Store Datasource
+     */
+    public function store(WP_REST_Request $request)
     {
-        global $wpdb;
+        $requiredFields = ['datasource_name', 'datasource_url'];
+
+        foreach($requiredFields as $field) {
+            if(!isset($request[$field])) {
+                var_dump('FIELD NOT FOUND IN PAYLOAD', $field);
+            }
+        }
+        // global $wpdb;
     }
 }
