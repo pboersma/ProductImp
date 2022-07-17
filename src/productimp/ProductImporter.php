@@ -38,7 +38,7 @@ class productimp_ProductImporter
         $charset_collate = $wpdb->get_charset_collate();
     
         $sql = "CREATE TABLE $table_name (
-            id                      int auto_increment,
+            id                      mediumint(9) NOT NULL AUTO_INCREMENT,
             datasource_name         varchar(255) NOT NULL,
             datasource_url          varchar(255) NOT NULL,
             datasource_credentials  JSON DEFAULT '{}' NOT NULL,
