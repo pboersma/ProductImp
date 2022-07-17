@@ -40,7 +40,6 @@ class productimp_ProductImporter
             id                     int auto_increment,
             datasource_name        varchar(255)            not null,
             datasource_url         varchar(255)            not null,
-            datasource_credentials JSON      default '{}'  not null,
             created_on             timestamp default NOW() null,
             constraint pipi_datasources_pk
                 primary key (id)
