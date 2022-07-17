@@ -35,26 +35,20 @@ class productimp_ProductImporter
 
         $table_name = $wpdb->prefix . '_pipi_datasources';
 
-        try {
-            $charset_collate = $wpdb->get_charset_collate();
-    
-            $sql = "CREATE TABLE $table_name (
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE $table_name (
                 id                      mediumint(9) NOT NULL AUTO_INCREMENT,
                 datasource_name         varchar(255) NOT NULL,
                 datasource_url          varchar(255) NOT NULL,
-                datasource_credentials  JSON DEFAULT '{}' NOT NULL,
                 created_on              timestamp DEFAULT NOW() NULL,
                 PRIMARY KEY  (id)
             ) $charset_collate;";
-        
-            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-            dbDelta( $sql );
-        } catch(\Exception $e) {
-            var_dump($e);
-            die;
-        }
-	
-        add_option( 'pipi_db_version', $pipi_db_version );
+
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        dbDelta($sql);
+
+        add_option('pipi_db_version', $pipi_db_version);
     }
 
     /**
