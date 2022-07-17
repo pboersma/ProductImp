@@ -15,9 +15,17 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
 
         foreach($requiredFields as $field) {
             if(!isset($request[$field])) {
-                var_dump('FIELD NOT FOUND IN PAYLOAD', $field);
+                $fieldsNotFound[] = $field;
             }
         }
-        // global $wpdb;
+
+        if($fieldsNotFound) {
+            return [
+                // Bad Request HTTP
+                'status' => 400,
+                'message' => 'Missing required fields',
+                'fields' => $fieldsNotFound
+            ];
+        }
     }
 }
