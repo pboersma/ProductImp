@@ -19,13 +19,18 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
             }
         }
 
+        // Early exit if required fields are missing from the request.
         if($fieldsNotFound) {
-            return [
-                // Bad Request HTTP
-                'status' => 400,
-                'message' => 'Missing required fields',
-                'fields' => $fieldsNotFound
-            ];
+            return new WP_Error( 
+                'missing_fields', 
+                'Missing Required Fields', 
+                array( 'status' => 400 ) 
+            );
+            // return [
+            //     'status' => 400, // Bad Request HTTP Status code
+            //     'message' => 'Missing required fields',
+            //     'fields' => $fieldsNotFound
+            // ];
         }
     }
 }
