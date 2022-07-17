@@ -31,6 +31,7 @@ class productimp_ProductImporter {
     public function setup()
     {
         var_dump("HIER");
+        die;
     }
 
     /**
