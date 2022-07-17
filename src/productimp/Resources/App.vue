@@ -47,24 +47,3 @@ import { isAuthorized } from "./Services/AuthService";
 
 const authorized = reactive(isAuthorized);
 </script>
-
-
-<!-- import { onMounted, reactive, defineComponent } from '@vue/runtime-core';
-import DataSources from "./Pages/DataSources.vue";
-import Products from "./Pages/Products.vue";
-
-import { isAuthorized } from "./Services/AuthService";
-
-export default {
-  components: {
-    DataSources,
-    Products,
-  },
-  setup() {
-    const authorized = reactive(isAuthorized)
-
-    return {
-        authorized
-    }
-  },
-}; -->
