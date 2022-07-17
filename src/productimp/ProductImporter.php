@@ -1,7 +1,7 @@
 <?php
 
-class productimp_ProductImporter {
-
+class productimp_ProductImporter
+{
     /**
      * The plugin router.
      *
@@ -16,7 +16,7 @@ class productimp_ProductImporter {
      */
     private $viewMaker;
 
-   /**
+    /**
      * Constructor.
      */
     public function __construct()
@@ -26,19 +26,37 @@ class productimp_ProductImporter {
     }
 
     /**
-     * Setup function only ran once on plugin activation
+     * Setup function only ran once on plugin activation.
      */
     public function setup()
     {
-        var_dump("HIER");
-        die;
+        global $wpdb;
+        $pipi_db_version = '1.0';
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "create table 'pipi_datasources'
+        (
+            id                     int auto_increment,
+            datasource_name        varchar(255)            not null,
+            datasource_url         varchar(255)            not null,
+            datasource_credentials JSON      default '{}'  not null,
+            created_on             timestamp default NOW() null,
+            constraint pipi_datasources_pk
+                primary key (id)
+        ) $charset_collate;";
+
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        dbDelta( $sql );
+
+        add_option( 'pipi_db_version', $pipi_db_version );
     }
 
     /**
      * Loads the plugin into WordPress.
      */
     public function load()
-    {   
+    {
         // Initialize Rest API Routes
         add_action('rest_api_init', function () {
             foreach ($this->get_routes() as $route) {
