@@ -6,25 +6,25 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
     {
         global $wpdb;
         // TODO: Can be a lot cleaner.
-        if (!isset($request['limit'])) {
-            $limit = 10;
-        } else {
-            $limit = $request['limit'];
-        }
+        // if (!isset($request['limit'])) {
+        //     $limit = 10;
+        // } else {
+        //     $limit = $request['limit'];
+        // }
 
-        if (isset($request['page'])) {
-            $pageno = $request['page'];
-        } else {
-            $pageno = 1;
-        }
+        // if (isset($request['page'])) {
+        //     $pageno = $request['page'];
+        // } else {
+        //     $pageno = 1;
+        // }
 
-        $offset = ($pageno - 1) * $limit;
-        $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_pipi_datasources");
-        $total = ceil($totalDatasources / $limit);
+        // $offset = ($pageno - 1) * $limit;
+        // $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_pipi_datasources");
+        // $total = ceil($totalDatasources / $limit);
 
         return [
-            'total' => $total,
-            'data' => $wpdb->get_results("SELECT * FROM wp_pipi_datasources LIMIT $offset, $limit")
+            // 'total' => $total,
+            'data' => $wpdb->get_results("SELECT * FROM wp_pipi_datasources")
         ];
     }
 
