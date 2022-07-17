@@ -24,7 +24,7 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
             return new WP_Error( 
                 'missing_fields', 
                 'Missing Required Fields', 
-                array( 'status' => 400 ) 
+                array( 'status' => 400, 'fields' => $fieldsNotFound ) 
             );
             // return [
             //     'status' => 400, // Bad Request HTTP Status code
