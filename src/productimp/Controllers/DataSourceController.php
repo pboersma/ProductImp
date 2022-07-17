@@ -47,6 +47,6 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
 
         return [
             'message' => 'Succesfully stored datasource'
-        ]
+        ];
     }
 }
