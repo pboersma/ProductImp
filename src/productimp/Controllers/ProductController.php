@@ -3,6 +3,7 @@
 class productimp_Controllers_ProductController implements productimp_Controllers_Interfaces_iController
 {
     /**
+     * NOTE: WILL BE DEPRECATED IN FAVOR OF PAGINATION LOGIC WITHIN FRONTEND
      * List all products that have been imported from Datasource.
      * 
      * @return Array
@@ -31,5 +32,11 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             "totalPages" => $totalOfPages,
             "products" => $wpdb->get_results("SELECT * FROM wp_productimp_products LIMIT $offset, $productListLimit")
         ];
+    }
+
+    public function getAll() {
+        global $wpdb;
+
+        return json_encode($wpdb->get_results("SELECT * FROM wp_productimp_products"));
     }
 }

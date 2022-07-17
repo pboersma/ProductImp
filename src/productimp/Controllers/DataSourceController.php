@@ -5,4 +5,9 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
     {
         return [];
     }
+
+    public function store()
+    {
+        global $wpdb;
+    }
 }

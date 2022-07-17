@@ -26,6 +26,14 @@ class productimp_ProductImporter {
     }
 
     /**
+     * Setup function only ran once on plugin activation
+     */
+    public function setup()
+    {
+        var_dump("HIER");
+    }
+
+    /**
      * Loads the plugin into WordPress.
      */
     public function load()
