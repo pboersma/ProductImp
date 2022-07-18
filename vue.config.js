@@ -2,6 +2,6 @@ const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  outputDir: 'classes/Visualization/dist/',
+  outputDir: 'productimp/classes/Visualization/dist/',
   filenameHashing: false,
 });
