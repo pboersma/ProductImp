@@ -26,6 +26,7 @@ class productimp_Autoloader
             return;
         }
         $file = dirname(__FILE__) . '/' . str_replace(array('_', "\0"), array('/', ''), $class) . '.php';
+        var_dump($class);
         var_dump($file);
         if (is_file($file)) {
             require_once $file;
