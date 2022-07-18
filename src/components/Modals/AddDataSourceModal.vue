@@ -14,7 +14,7 @@
       z-50
       w-full
       md:inset-0
-      h-modal
+      h-screen
       md:h-full
       pt-20
     "
