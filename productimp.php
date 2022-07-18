@@ -4,7 +4,7 @@ Plugin Name: Product Imp - Woocommerce Product Importer.
 */
 
 // Setup class autoloader
-require_once dirname(__FILE__) . '/src/productimp/Autoloader.php';
+require_once dirname(__FILE__) . '/classes/Autoloader.php';
 productimp_Autoloader::register();
 
 $productimp = new productimp_ProductImporter();
