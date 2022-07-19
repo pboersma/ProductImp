@@ -1,6 +1,5 @@
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
-adasd
   <div
     id="defaultModal"
     tabindex="-1"
