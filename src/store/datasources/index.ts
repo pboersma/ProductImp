@@ -1,5 +1,5 @@
 import { Commit } from 'vuex';
-import { getAllDataSources } from '../../services/DataSourceService';
+import { DataSource, getAll, create } from '../../services/DataSourceService';
 
 interface State {
   dataSources: Array<unknown>
@@ -20,13 +20,31 @@ export default {
   },
   actions: {
     async fetchAll({ commit }: { commit: Commit }) {
-      const dataSources = await getAllDataSources();
+      const dataSources = await getAll();
+      console.log(dataSources);
 
       // TODO: Make sure to reject the Promise at some point.
       return new Promise((resolve, reject) => {
         commit('SET_DATASOURCES', dataSources);
 
         resolve(dataSources);
+      });
+    },
+
+    // eslint-disable-next-line no-empty-pattern
+    async create({ commit }: { commit: Commit }, payload: DataSource) {
+      return new Promise((resolve, reject) => {
+        const response = create(payload);
+
+        // If the store is false, reject.
+        if (!response) {
+          reject(response);
+        }
+
+        const dataSources = getAll();
+        commit('SET_DATASOURCES', dataSources);
+
+        resolve(response);
       });
     },
   },

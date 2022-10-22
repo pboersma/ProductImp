@@ -1,3 +1,5 @@
+<!-- eslint-disable camelcase -->
+<!-- eslint-disable camelcase -->
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <div
@@ -72,11 +74,13 @@
                   text-gray-900
                   dark:text-gray-300
                 "
-                >Name</label
+                >Name
+                </label
               >
               <input
                 type="text"
                 id="datasource_name"
+                v-model="data.datasource_name"
                 class="
                   bg-gray-50
                   border border-gray-300
@@ -130,6 +134,7 @@
                   dark:focus:border-blue-500
                 "
                 placeholder="https://www.google.nl/"
+                  v-model="data.datasource_url"
                 required
               />
             </div>
@@ -166,6 +171,7 @@
                     dark:focus:ring-blue-500
                     dark:focus:border-blue-500
                   "
+                  v-model="data.datasource_credentials.username"
                   placeholder="johndoe@gmail.com"
                   required
                 />
@@ -186,6 +192,7 @@
                 <input
                   type="password"
                   id="datasource_password"
+                  v-model="data.datasource_credentials.password"
                   class="
                     bg-gray-50
                     border border-gray-300
@@ -223,6 +230,7 @@
           <button
             data-modal-toggle="defaultModal"
             type="button"
+            @click="createDataSource()"
             class="
               text-white
               bg-blue-700
@@ -272,13 +280,40 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
+import store from '@/store';
+import { DataSource } from '../../services/DataSourceService';
+
+const emit = defineEmits(['closeAddDataSourceModal', 'refetchDataSources']);
 
 const props = defineProps({
   visible: Boolean,
 });
 
 const modalActive = ref(false);
+const data = ref<DataSource>({
+  datasource_name: null,
+  datasource_url: null,
+  datasource_credentials: {
+    username: null,
+    password: null,
+  },
+});
+
+const createDataSource = () => {
+  store.dispatch('datasources/create', data.value);
+  // TODO: Can be cleaner.
+  data.value = {
+    datasource_name: null,
+    datasource_url: null,
+    datasource_credentials: {
+      username: null,
+      password: null,
+    },
+  };
+  emit('refetchDataSources');
+  emit('closeAddDataSourceModal');
+};
 </script>
 
 <style lang="less">

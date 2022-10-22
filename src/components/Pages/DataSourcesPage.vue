@@ -98,6 +98,7 @@
   <AddDataSourceModal
     :visible="isAddDataSourcesModalVisible"
     @close-add-data-source-modal="toggleAddDataSourcesModal()"
+    @refetch-data-sources="fetchAll()"
   ></AddDataSourceModal>
 </template>
 
@@ -110,15 +111,21 @@ const dataSources = computed(() => store.getters['datasources/allDataSources']);
 const loading = ref(true);
 const isAddDataSourcesModalVisible = ref(false);
 
+const fetchAll = () => {
+  loading.value = true;
+  const promises = [store.dispatch('datasources/fetchAll')];
+
+  Promise.all(promises).then((response) => {
+    loading.value = false;
+    Promise.resolve();
+  });
+};
+
 const toggleAddDataSourcesModal = () => {
   isAddDataSourcesModalVisible.value = !isAddDataSourcesModalVisible.value;
 };
 
 onMounted(() => {
-  const promises = [store.dispatch('datasources/fetchAll')];
-
-  Promise.all(promises).then((response) => {
-    loading.value = false;
-  });
+  fetchAll();
 });
 </script>
