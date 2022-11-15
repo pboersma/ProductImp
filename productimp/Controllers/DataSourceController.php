@@ -2,25 +2,11 @@
 
 class productimp_Controllers_DataSourceController implements productimp_Controllers_Interfaces_iController
 {
+    private $table = 'pipi_datasources';
+
     public function list(WP_REST_Request $request): Array
     {
         global $wpdb;
-        // TODO: Can be a lot cleaner.
-        // if (!isset($request['limit'])) {
-        //     $limit = 10;
-        // } else {
-        //     $limit = $request['limit'];
-        // }
-
-        // if (isset($request['page'])) {
-        //     $pageno = $request['page'];
-        // } else {
-        //     $pageno = 1;
-        // }
-
-        // $offset = ($pageno - 1) * $limit;
-        // $totalDatasources = $wpdb->get_var("SELECT COUNT(*) FROM wp_pipi_datasources");
-        // $total = ceil($totalDatasources / $limit);
 
         return [
             // 'total' => $total,
@@ -53,9 +39,7 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
             );
         }
 
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . 'pipi_datasources';
+        $table_name = $wpdb->prefix . $this->table;
 
         $wpdb->insert(
             $table_name,
@@ -69,5 +53,30 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
         return [
             'message' => 'Succesfully stored datasource'
         ];
+    }
+
+    public function sync(WP_REST_Request $request)
+    {
+        $dataSourceId = $request['id'];
+
+        if(!$dataSourceId) {
+            return new WP_Error(
+                'missing_fields',
+                'Missing Id',
+                [
+                    'status' => 400
+                ]
+            );
+        }
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->table;
+
+
+        // Get credentials
+        return [
+            'data' => $wpdb->get_results(`SELECT * FROM ${table_name} WHERE id = ${dataSourceId}`)
+        ];
+
     }
 }

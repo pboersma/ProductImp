@@ -34,5 +34,11 @@
         "methods": "POST",
         "class": "productimp_Controllers_DataSourceController",
         "callback": "store"
+    },
+    {
+        "route": "/datasources/sync",
+        "methods": "POST",
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "sync"
     }
 ]

@@ -11,7 +11,7 @@ class productimp_Authorization_Gatekeeper {
     $params = [
       'app_name' => 'NT Woocommerce Product Importer', // Auto Generated name for package.
       'scope' => 'read_write',
-      'user_id' => 1, // Current Logged in Userid
+      'user_id' => 1, // Current Logged in Userid //TODO: Use current logged in user
       'return_url' => $ntwcwp_current_url,
       'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/gatekeeper/store' //Callback URL for storing data.
     ];
