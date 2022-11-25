@@ -31,25 +31,27 @@ class productimp_ProductImporter
     public function setup()
     {
         global $wpdb;
-        $pipi_db_version = '1.0';
-
-        $table_name = $wpdb->prefix . 'pipi_datasources';
-	
         $charset_collate = $wpdb->get_charset_collate();
-    
-        $sql = "CREATE TABLE $table_name (
-            id                      mediumint(9) NOT NULL AUTO_INCREMENT,
-            datasource_name         varchar(255) NOT NULL,
-            datasource_url          varchar(255) NOT NULL,
-            datasource_credentials  varchar(1000) DEFAULT '{}' NOT NULL,
-            created_on              timestamp DEFAULT NOW() NULL,
+
+        $datasource_table = "CREATE TABLE wp_pipi_datasources (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            datasource_name varchar(255) NOT NULL,
+            datasource_url varchar(255) NOT NULL,
+            datasource_credentials varchar(1000) DEFAULT '{}' NOT NULL,
+            created_on timestamp DEFAULT NOW() NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
-    
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta( $sql );
 
-        add_option( 'pipi_db_version', $pipi_db_version );
+        $products_table = "CREATE TABLE wp_pipi_products (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            datasource_id varchar(255) NOT NULL,
+            product varchar(1000) DEFAULT '{}' NOT NULL,
+            created_on timestamp DEFAULT NOW() NULL,
+            PRIMARY KEY  (id)
+        ) $charset_collate";
+
+        $this->createTable('pipi_datasources', $datasource_table);
+        $this->createTable('pipi_products', $products_table);
     }
 
     /**
@@ -76,5 +78,20 @@ class productimp_ProductImporter
     private function get_routes()
     {
         return $this->router->get_routes();
+    }
+
+    private function createTable($table_name, $schema)
+    {
+        global $wpdb;
+        $pipi_db_version = '1.0';
+
+        $table_name = $wpdb->prefix . $table_name;
+	
+        $charset_collate = $wpdb->get_charset_collate();
+    
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        dbDelta( $schema );
+
+        add_option( 'pipi_db_version', $pipi_db_version );
     }
 }

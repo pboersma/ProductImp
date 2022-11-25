@@ -1,21 +1,39 @@
 [
     {
-        "route": "/gatekeeper/store",
+        "route": "/datasources/list",
+        "methods": "GET",
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "list"
+    },
+    {
+        "route": "/datasources/create",
         "methods": "POST",
-        "class": "productimp_Authorization_Gatekeeper",
-        "callback": "storeAuthKey"
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "create"
     },
     {
-        "route": "/gatekeeper/generate",
+        "route": "/datasources/read",
         "methods": "GET",
-        "class": "productimp_Authorization_Gatekeeper",
-        "callback": "generateAuthKey"
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "read"
     },
     {
-        "route": "/gatekeeper/authorized",
+        "route": "/datasources/update",
+        "methods": "POST",
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "update"
+    },
+    {
+        "route": "/datasources/delete",
+        "methods": "DELETE",
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "delete"
+    },
+    {
+        "route": "/datasources/sync",
         "methods": "GET",
-        "class": "productimp_Authorization_Gatekeeper",
-        "callback": "isAuthorized"
+        "class": "productimp_Controllers_DataSourceController",
+        "callback": "sync"
     },
     {
         "route": "/products/list",
@@ -24,21 +42,27 @@
         "callback": "list"
     },
     {
-        "route": "/datasources/list",
+        "route": "/products/create",
+        "methods": "POST",
+        "class": "productimp_Controllers_ProductController",
+        "callback": "create"
+    },
+    {
+        "route": "/products/read",
         "methods": "GET",
-        "class": "productimp_Controllers_DataSourceController",
-        "callback": "list"
+        "class": "productimp_Controllers_ProductController",
+        "callback": "read"
     },
     {
-        "route": "/datasources/store",
+        "route": "/products/update",
         "methods": "POST",
-        "class": "productimp_Controllers_DataSourceController",
-        "callback": "store"
+        "class": "productimp_Controllers_ProductController",
+        "callback": "update"
     },
     {
-        "route": "/datasources/sync",
-        "methods": "POST",
-        "class": "productimp_Controllers_DataSourceController",
-        "callback": "sync"
+        "route": "/products/delete",
+        "methods": "DELETE",
+        "class": "productimp_Controllers_ProductController",
+        "callback": "delete"
     }
 ]
