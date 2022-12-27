@@ -1,7 +1,12 @@
 <template>
 <div v-show="!loading">
   <NavigationBar/>
-  <PageSelect />
+  <PageSelect v-if="authorized" />
+  <div v-else class="p-5">
+    <h2 class="font-bold">
+      User is unauthorized, Please use the authentication button to continue.
+    </h2>
+  </div>
 </div>
 </template>
 

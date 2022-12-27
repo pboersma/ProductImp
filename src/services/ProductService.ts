@@ -1,12 +1,7 @@
 import axios from 'axios';
 
-const getAllProducts = (): Promise<boolean> => axios.get(`${window.location.origin}/wp-json/productimp/v1/gatekeeper/authorized`)
-  .then((response) => {
-    if (response.data.status === 401) {
-      return false;
-    }
-    return true;
-  })
+const getAll = (): Promise<boolean> => axios.get('https://boersma.dev/wp-json/productimp/v1/products/list')
+  .then((response) => response.data.data)
   .catch((error) => {
     console.debug(error);
     // Force True for now as we don't have any mock.
@@ -18,6 +13,6 @@ function placeholderFunc() {
 }
 
 export {
-  getAllProducts,
+  getAll,
   placeholderFunc,
 };

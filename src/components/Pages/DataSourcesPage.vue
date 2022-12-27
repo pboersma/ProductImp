@@ -28,6 +28,7 @@
           duration-200
         "
       >
+        <font-awesome-icon icon="fa-solid fa-plus" />
         Add
       </button>
     </div>
@@ -44,10 +45,7 @@
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-6 py-3">URL</th>
-            <th scope="col" class="px-6 py-3">Private</th>
-            <th scope="col" class="px-6 py-3">
-              <span class="sr-only">Edit</span>
-            </th>
+            <th scope="col" class="px-6 py-3">Actions</th>
           </tr>
         </thead>
         <tbody v-if="!loading">
@@ -76,18 +74,45 @@
               {{ dataSource.datasource_name }}
             </th>
             <td class="px-6 py-4">{{ dataSource.datasource_url }}</td>
-            <td class="px-6 py-4">true</td>
-            <td class="px-6 py-4 text-right">
+            <td class="px-6 py-4 flex">
               <button
                 href="#"
+                @click="toggleSyncDataSourceModal(dataSource.id)"
                 class="
                   font-medium
                   text-blue-600
                   dark:text-blue-500
                   hover:underline
+                  mr-2
                 "
               >
-                edit
+                <font-awesome-icon icon="fa-solid fa-rotate" />
+              </button>
+              <button
+                href="#"
+                disabled
+                class="
+                  disabled
+                  font-medium
+                  text-blue-600
+                  dark:text-blue-500
+                  hover:underline
+                  mr-2
+                "
+              >
+                <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+              </button>
+              <button
+                @click="deleteRecord(dataSource.id)"
+                class="
+                  font-medium
+                  text-blue-600
+                  dark:text-blue-500
+                  hover:underline
+                  mr-2
+                "
+              >
+                <font-awesome-icon icon="fa-solid fa-trash" />
               </button>
             </td>
           </tr>
@@ -100,32 +125,107 @@
     @close-add-data-source-modal="toggleAddDataSourcesModal()"
     @refetch-data-sources="fetchAll()"
   ></AddDataSourceModal>
+  <SyncDataSourceModal
+    :current-datasource="currentDatasource"
+    :visible="isSyncDataSourceModalVisible"
+    @close-sync-data-source-modal="toggleSyncDataSourceModal()"
+  ></SyncDataSourceModal>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import Swal from 'sweetalert2';
 import store from '@/store';
 import AddDataSourceModal from '../Modals/AddDataSourceModal.vue';
+import SyncDataSourceModal from '../Modals/SyncDataSourceModal.vue';
 
-const dataSources = computed(() => store.getters['datasources/allDataSources']);
 const loading = ref(true);
-const isAddDataSourcesModalVisible = ref(false);
+
+// Datasource list fetching logic
+const dataSources = computed(() => store.getters['datasources/allDataSources']);
 
 const fetchAll = () => {
-  loading.value = true;
   const promises = [store.dispatch('datasources/fetchAll')];
 
+  // TODO: Do something with the response & error.
   Promise.all(promises).then((response) => {
     loading.value = false;
     Promise.resolve();
   });
 };
 
+// Datasource actions logic
+const currentDatasource = ref();
+
+// Modal visibility logic
+const isAddDataSourcesModalVisible = ref(false);
+const isSyncDataSourceModalVisible = ref(false);
+
+/**
+ * Toggle the visibility of the add data sources modal.
+ *
+ * @return void
+ */
 const toggleAddDataSourcesModal = () => {
   isAddDataSourcesModalVisible.value = !isAddDataSourcesModalVisible.value;
+};
+
+/**
+ * Toggle the syncing data source (or close).
+ *
+ * @param dataSourceId string | null Can be either null for closing or
+ * string for setting the current data source
+ *
+ * @return void
+ */
+const toggleSyncDataSourceModal = (dataSourceId: string | null = null) => {
+  currentDatasource.value = dataSourceId;
+  isSyncDataSourceModalVisible.value = !isSyncDataSourceModalVisible.value;
+};
+
+/**
+ * Delete a record
+ *
+ * @param id
+ *
+ * @return void
+ */
+const deleteRecord = (id: string): void => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Promise.all([store.dispatch('datasources/delete', id)])
+        .catch((error) => {
+          Swal.fire(
+            'Error!',
+            'Something went wrong deleting the record',
+            'error',
+          );
+        })
+        .then((response) => {
+          if (response) {
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            fetchAll();
+          }
+        });
+    }
+  });
 };
 
 onMounted(() => {
   fetchAll();
 });
 </script>
+
+<style scoped>
+.disabled {
+  color: rgba(37, 99,235, 0.4)
+}
+</style>

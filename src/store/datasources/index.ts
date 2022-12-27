@@ -1,5 +1,7 @@
 import { Commit } from 'vuex';
-import { DataSource, getAll, create } from '../../services/DataSourceService';
+import {
+  DataSource, getAll, create, destroy, getSingle,
+} from '../../services/DataSourceService';
 
 interface State {
   dataSources: Array<unknown>
@@ -21,11 +23,21 @@ export default {
   actions: {
     async fetchAll({ commit }: { commit: Commit }) {
       const dataSources = await getAll();
-      console.log(dataSources);
 
       // TODO: Make sure to reject the Promise at some point.
       return new Promise((resolve, reject) => {
         commit('SET_DATASOURCES', dataSources);
+
+        resolve(dataSources);
+      });
+    },
+
+    async fetchSingle({ commit }: { commit: Commit }, identifier: string) {
+      const dataSources = await getSingle(identifier);
+
+      // TODO: Make sure to reject the Promise at some point.
+      return new Promise((resolve, reject) => {
+        commit('SET_DATASOURCE', dataSources);
 
         resolve(dataSources);
       });
@@ -47,5 +59,19 @@ export default {
         resolve(response);
       });
     },
+
+    async delete({ commit }: { commit: Commit }, identifier: string) {
+      return new Promise((resolve, reject) => {
+        const response = destroy(identifier);
+
+        // If the store is false, reject.
+        if (!response) {
+          reject(response);
+        }
+
+        resolve(response);
+      });
+    },
+
   },
 };

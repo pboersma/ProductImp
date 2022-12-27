@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const isAuthorized = (): Promise<boolean> => axios.get(`${window.location.origin}/wp-json/productimp/v1/gatekeeper/authorized`)
+const isAuthorized = (): Promise<boolean> => axios.get('https://boersma.dev/wp-json/productimp/v1/gatekeeper/authorized')
   .then((response) => {
     if (response.data.status === 401) {
       return false;
