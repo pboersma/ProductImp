@@ -19,7 +19,7 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
 
             return new WP_REST_Response(
                 [
-                    'data' => $wpdb->get_results("SELECT * FROM $table")
+                    'data' => $wpdb->get_results("SELECT id, datasource_name, datasource_url FROM $table")
                 ], 
                 200
             );
@@ -196,88 +196,94 @@ class productimp_Controllers_DataSourceController implements productimp_Controll
 
     public function sync(WP_Rest_Request $request): WP_REST_Response | WP_Error
     {
-        $dataSourceId = 4;
-
-        if(!$dataSourceId) {
-            return new WP_Error(
-                'missing_fields',
-                'Missing Id',
-                [
-                    'status' => 400
-                ]
-            );
-        }
-
-        try {
-            global $wpdb;
-            $table_name = $wpdb->prefix . $this->table;
-
-            $dataSource = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $dataSourceId");
-
-            if(!$dataSource) {
-                return new WP_REST_Response(
-                    [
-                        'data' => 'No Datasource found, Exiting.'
-                    ], 
-                    200
-                );
-            }    
-        } catch(\Exception $e) {
-            return new WP_Error(
-                'caught_exception',
-                $e->getMessage(),
-                [
-                    'status' => 500
-                ]
-            );
-        }
-  
-        try {
-            $client = new Client();
-
-            $response = $client->request(
-                'GET',
-                $dataSource->datasource_url,
-                [
-                    'auth' => [
-                        json_decode($dataSource->datasource_credentials, true)['username'],
-                        json_decode($dataSource->datasource_credentials, true)['password']
-                    ]
-                ]
-            );
-
-            $products = json_decode($response->getBody()->getContents(), true);
-        } catch(\Exception $e) {
-            return new WP_Error(
-                'caught_exception',
-                $e->getMessage(),
-                [
-                    'status' => 500
-                ]
-            );
-        }
-
-        foreach ($products as $product) {
-            $client = new Client();
-
-            $response = $client->request(
-                'POST',
-                'https://boersma.dev/wp-json/productimp/v1/products/create',
-                [
-                    'form_params' => [
-                       "datasource_id" => $dataSourceId,
-                       "product" => $product
-                    ]
-                ]
-            );
-        }
-
-        return new WP_REST_Response(
+        return WP_REST_Response(
             [
-                'data' => $response->getBody()->getContents()
+                'data' => "WORK IN PROGRESS"
             ], 
             200
         );
+
+        // if(!$dataSourceId) {
+        //     return new WP_Error(
+        //         'missing_fields',
+        //         'Missing Id',
+        //         [
+        //             'status' => 400
+        //         ]
+        //     );
+        // }
+
+        // try {
+        //     global $wpdb;
+        //     $table_name = $wpdb->prefix . $this->table;
+
+        //     $dataSource = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $dataSourceId");
+
+        //     if(!$dataSource) {
+        //         return new WP_REST_Response(
+        //             [
+        //                 'data' => 'No Datasource found, Exiting.'
+        //             ], 
+        //             200
+        //         );
+        //     }    
+        // } catch(\Exception $e) {
+        //     return new WP_Error(
+        //         'caught_exception',
+        //         $e->getMessage(),
+        //         [
+        //             'status' => 500
+        //         ]
+        //     );
+        // }
+  
+        // try {
+        //     $client = new Client();
+
+        //     $response = $client->request(
+        //         'GET',
+        //         $dataSource->datasource_url,
+        //         [
+        //             // TODO: Conditionally add username & password for auth
+        //             'auth' => [
+        //                 json_decode($dataSource->datasource_credentials, true)['username'],
+        //                 json_decode($dataSource->datasource_credentials, true)['password']
+        //             ]
+        //         ]
+        //     );
+
+        //     $products = json_decode($response->getBody()->getContents(), true);
+        // } catch(\Exception $e) {
+        //     return new WP_Error(
+        //         'caught_exception',
+        //         $e->getMessage(),
+        //         [
+        //             'status' => 500
+        //         ]
+        //     );
+        // }
+
+        // foreach ($products as $product) {
+        //     $client = new Client();
+
+        //     $response = $client->request(
+        //         'POST',
+        //         'https://boersma.dev/wp-json/productimp/v1/products/create',
+        //         [
+        //             'form_params' => [
+        //                "datasource_id" => $dataSourceId,
+        //                "product" => $product
+        //             ]
+        //         ]
+        //     );
+        // }
+
+        // return new WP_REST_Response(
+        //     [
+        //         'data' => $response->getBody()->getContents()
+        //     ], 
+        //     200
+        // );
 
     }
 }
