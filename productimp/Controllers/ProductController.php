@@ -189,4 +189,94 @@ class productimp_Controllers_ProductController implements productimp_Controllers
                 );
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function map(WP_REST_Request $request): WP_REST_Response | WP_Error
+    {
+        // Validate that the request has an id for the datasource to update.
+        if(!$request['product_id']) {
+            return new WP_Error(
+                'missing_fields',
+                'Missing Required Fields',
+                [
+                    'status' => 400,
+                    'fields' => 'id'
+                ]
+            );
+        }
+
+        try {
+            global $wpdb;
+
+            $wpdb->replace(
+                'wp_pipi_products_map',
+                [
+                    'product_id'             => $request['product_id'],
+                    'map'                    => json_encode($request['map']),
+                ]
+            );
+
+            return new WP_REST_Response([
+                'message' => $response
+            ], 
+            200);
+        } catch(\Exception $e) {
+            // Throw exception
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMap(WP_REST_Request $request): WP_REST_Response | WP_Error
+    {
+        try {
+            global $wpdb;
+            $table = $wpdb->prefix . $this->table;
+
+            $id = $request['product_id'];
+            return new WP_REST_Response(
+                [
+                    $wpdb->get_row("SELECT * FROM wp_pipi_products_map WHERE product_id = '$id';")
+                ], 
+                200
+            );
+        } catch(\Exception $e) {
+            return new WP_Error(
+                'caught_exception',
+                $e->getMessage(),
+                [
+                    'status' => 500
+                ]
+                );
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMappings(): WP_REST_Response | WP_Error
+    {
+        try {
+            global $wpdb;
+            $table = 'wp_pipi_products_map';
+
+            return new WP_REST_Response(
+                [
+                    'data' => $wpdb->get_results("SELECT * FROM $table")
+                ], 
+                200
+            );
+        } catch(\Exception $e) {
+            return new WP_Error(
+                'caught_exception',
+                $e->getMessage(),
+                [
+                    'status' => 500
+                ]
+            );
+        }
+    }
 }

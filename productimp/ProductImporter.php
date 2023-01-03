@@ -50,8 +50,18 @@ class productimp_ProductImporter
             PRIMARY KEY  (id)
         ) $charset_collate";
 
+
+        $products_map_table = "CREATE TABLE wp_pipi_products_map (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            product_id varchar(255) NOT NULL,
+            map varchar(1000) DEFAULT '{}' NOT NULL,
+            created_on timestamp DEFAULT NOW() NULL,
+            PRIMARY KEY  (id)
+        ) $charset_collate";
+
         $this->createTable('pipi_datasources', $datasource_table);
         $this->createTable('pipi_products', $products_table);
+        $this->createTable('pipi_products_map', $products_map_table);
     }
 
     /**
