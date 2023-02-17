@@ -76,8 +76,7 @@
             <td class="px-6 py-4">{{ dataSource.datasource_url }}</td>
             <td class="px-6 py-4 flex">
               <button
-                href="#"
-                @click="toggleSyncDataSourceModal(dataSource.id)"
+                @click="syncDataSource(dataSource.id)"
                 class="
                   font-medium
                   text-blue-600
@@ -87,20 +86,6 @@
                 "
               >
                 <font-awesome-icon icon="fa-solid fa-rotate" />
-              </button>
-              <button
-                href="#"
-                disabled
-                class="
-                  disabled
-                  font-medium
-                  text-blue-600
-                  dark:text-blue-500
-                  hover:underline
-                  mr-2
-                "
-              >
-                <font-awesome-icon icon="fa-solid fa-pen-to-square" />
               </button>
               <button
                 @click="deleteRecord(dataSource.id)"
@@ -125,11 +110,6 @@
     @close-add-data-source-modal="toggleAddDataSourcesModal()"
     @refetch-data-sources="fetchAll()"
   ></AddDataSourceModal>
-  <SyncDataSourceModal
-    :current-datasource="currentDatasource"
-    :visible="isSyncDataSourceModalVisible"
-    @close-sync-data-source-modal="toggleSyncDataSourceModal()"
-  ></SyncDataSourceModal>
 </template>
 
 <script setup lang="ts">
@@ -137,7 +117,7 @@ import { computed, onMounted, ref } from 'vue';
 import Swal from 'sweetalert2';
 import store from '@/store';
 import AddDataSourceModal from '../Modals/AddDataSourceModal.vue';
-import SyncDataSourceModal from '../Modals/SyncDataSourceModal.vue';
+import { sync } from '../../services/DataSourceService';
 
 const loading = ref(true);
 
@@ -159,7 +139,6 @@ const currentDatasource = ref();
 
 // Modal visibility logic
 const isAddDataSourcesModalVisible = ref(false);
-const isSyncDataSourceModalVisible = ref(false);
 
 /**
  * Toggle the visibility of the add data sources modal.
@@ -168,19 +147,6 @@ const isSyncDataSourceModalVisible = ref(false);
  */
 const toggleAddDataSourcesModal = () => {
   isAddDataSourcesModalVisible.value = !isAddDataSourcesModalVisible.value;
-};
-
-/**
- * Toggle the syncing data source (or close).
- *
- * @param dataSourceId string | null Can be either null for closing or
- * string for setting the current data source
- *
- * @return void
- */
-const toggleSyncDataSourceModal = (dataSourceId: string | null = null) => {
-  currentDatasource.value = dataSourceId;
-  isSyncDataSourceModalVisible.value = !isSyncDataSourceModalVisible.value;
 };
 
 /**
@@ -215,6 +181,34 @@ const deleteRecord = (id: string): void => {
             fetchAll();
           }
         });
+    }
+  });
+};
+
+const syncDataSource = (id: string): void => {
+  console.log(id);
+  Swal.fire({
+    title: 'Synchronize Data Source',
+    text: 'This will import all the products from the selected datasource and will take around 10 minutes to complete',
+    footer: '<strong>Please dont close the page while syncing the data source</strong>',
+    // icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sync',
+  }).then((result) => {
+    console.log(result);
+    if (result.isConfirmed) {
+      sync(id);
+      Swal.fire({
+        icon: 'success',
+        title: `Syncing Data Source: ${id}`,
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 600000,
+        timerProgressBar: true,
+      });
     }
   });
 };

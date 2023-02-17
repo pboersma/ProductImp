@@ -22,7 +22,7 @@ const destroy = (id: string): Promise<boolean> => axios.post('https://boersma.de
   id,
 }).then((response) => true);
 
-const sync = (id: string): Promise<boolean> => axios.post('https://boersma.dev/wp-json/productimp/v1/datasources/sync', id)
+const sync = (id: string): Promise<boolean> => axios.post('https://boersma.dev/wp-json/productimp/v1/datasources/sync', { id })
   .then((response) => {
     console.log(response);
     return true;

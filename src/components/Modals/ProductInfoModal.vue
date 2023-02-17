@@ -9,16 +9,12 @@
     :class="{ hidden: !visible }"
     class="
       bgblackopacitied
-      absolute
-      top-0
-      right-0
-      left-0
+      fixed
       z-50
-      w-full
-      md:inset-
-      h-screen
-      md:h-screen
+      top-0
       pt-20
+      w-full
+      h-full
     "
   >
     <div class="mx-auto p-4 w-full max-w-2xl h-full md:h-auto">
@@ -41,7 +37,7 @@
           </h3>
           <button
             type="button"
-            @click="$emit('closeSyncDataSourceModal')"
+            @click="$emit('closeProductInfoModal')"
             class="
               text-gray-400
               bg-transparent
@@ -62,18 +58,6 @@
         </div>
         <!-- Modal body -->
         <div class="p-1 space-y-6 h-96" style="overflow-y: auto">
-          <div
-            v-if="currentProduct['Afbeeldingen'].image"
-            style="display: flex; overflow-x: auto; width: 100%"
-          >
-            <img
-              v-for="image in currentProduct['Afbeeldingen'].image"
-              class="h-40"
-              :key="image"
-              alt="afbeelding"
-              :src="image"
-            />
-          </div>
           <table class="text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
               <tr
@@ -88,7 +72,6 @@
                 "
               >
                 <td
-                  v-if="name != 'Afbeeldingen'"
                   class="
                     px-6
                     py-4
@@ -101,7 +84,7 @@
                 >
                   {{ name }}
                 </td>
-                <td class="px-6 py-4" v-if="name != 'Afbeeldingen'">
+                <td class="px-6 py-4">
                   {{ value }}
                 </td>
               </tr>

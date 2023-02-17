@@ -8,17 +8,13 @@
     aria-hidden="true"
     :class="{'hidden': !visible }"
     class="
-      bgblackopacitied
-      absolute
-      top-0
-      right-0
-      left-0
+    bgblackopacitied
+      fixed
       z-50
-      w-full
-      md:inset-0
-      h-screen
-      md:h-screen
+      top-0
       pt-20
+      w-full
+      h-full
     "
   >
     <div class="mx-auto p-4 w-full max-w-2xl h-full md:h-auto">
