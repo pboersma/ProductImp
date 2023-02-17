@@ -2,7 +2,7 @@
 
 class productimp_Controllers_ProductController implements productimp_Controllers_Interfaces_iController
 {
-    private $table = 'pipi_products';
+    private $table = 'pi_products';
     private $tableSchema = ['datasource_id', 'product'];
 
     /**
@@ -61,7 +61,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             global $wpdb;
             $table_name = $wpdb->prefix . $this->table;
     
-            $wpdb->insert(
+            $response = $wpdb->insert(
                 $table_name,
                 [
                     'datasource_id'          => $request['datasource_id'],
@@ -70,7 +70,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             );
     
             return new WP_REST_Response([
-                'message' => 'Succesfully stored product'
+                'message' => $response
             ], 200);
         } catch(\Exception $e) {
             return new WP_Error(
@@ -211,7 +211,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             global $wpdb;
 
             $wpdb->replace(
-                'wp_pipi_products_map',
+                'wp_pi_products_map',
                 [
                     'product_id'             => $request['product_id'],
                     'map'                    => json_encode($request['map']),
@@ -239,7 +239,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             $id = $request['product_id'];
             return new WP_REST_Response(
                 [
-                    $wpdb->get_row("SELECT * FROM wp_pipi_products_map WHERE product_id = '$id';")
+                    $wpdb->get_row("SELECT * FROM wp_pi_products_map WHERE product_id = '$id';")
                 ], 
                 200
             );
@@ -261,7 +261,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
     {
         try {
             global $wpdb;
-            $table = 'wp_pipi_products_map';
+            $table = 'wp_pi_products_map';
 
             return new WP_REST_Response(
                 [

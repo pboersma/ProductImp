@@ -85,8 +85,14 @@
     },
     {
         "route": "/woocommerce/product/create",
-        "methods": "GET",
+        "methods": "POST",
         "class": "productimp_Controllers_WooCommerceController",
         "callback": "createProduct"
+    },
+    {
+        "route": "/woocommerce/product/read",
+        "methods": "POST",
+        "class": "productimp_Controllers_WooCommerceController",
+        "callback": "findProduct"
     }
 ]

@@ -33,7 +33,7 @@ class productimp_ProductImporter
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
 
-        $datasource_table = "CREATE TABLE wp_pipi_datasources (
+        $datasource_table = "CREATE TABLE wp_pi_datasources (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             datasource_name varchar(255) NOT NULL,
             datasource_url varchar(255) NOT NULL,
@@ -42,7 +42,7 @@ class productimp_ProductImporter
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
-        $products_table = "CREATE TABLE wp_pipi_products (
+        $products_table = "CREATE TABLE wp_pi_products (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             datasource_id varchar(255) NOT NULL,
             product varchar(1000) DEFAULT '{}' NOT NULL,
@@ -50,8 +50,7 @@ class productimp_ProductImporter
             PRIMARY KEY  (id)
         ) $charset_collate";
 
-
-        $products_map_table = "CREATE TABLE wp_pipi_products_map (
+        $products_map_table = "CREATE TABLE wp_pi_products_map (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             product_id varchar(255) NOT NULL,
             map varchar(1000) DEFAULT '{}' NOT NULL,
@@ -59,9 +58,18 @@ class productimp_ProductImporter
             PRIMARY KEY  (id)
         ) $charset_collate";
 
-        $this->createTable('pipi_datasources', $datasource_table);
-        $this->createTable('pipi_products', $products_table);
-        $this->createTable('pipi_products_map', $products_map_table);
+        $products_map_table = "CREATE TABLE wp_pi_products_woocommerce (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            product_id varchar(255) NOT NULL,
+            woocommerce_product_id varchar(255) NOT NULL,
+            created_on timestamp DEFAULT NOW() NULL,
+            PRIMARY KEY  (id)
+        ) $charset_collate";
+
+        $this->createTable('pi_datasources', $datasource_table);
+        $this->createTable('pi_products', $products_table);
+        $this->createTable('pi_products_map', $products_map_table);
+        $this->createTable('pi_products_woocommerce', $products_map_table);
     }
 
     /**
@@ -93,15 +101,10 @@ class productimp_ProductImporter
     private function createTable($table_name, $schema)
     {
         global $wpdb;
-        $pipi_db_version = '1.0';
-
         $table_name = $wpdb->prefix . $table_name;
-	
         $charset_collate = $wpdb->get_charset_collate();
-    
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta( $schema );
-
-        add_option( 'pipi_db_version', $pipi_db_version );
+        add_option( 'pi_db_version', '1.0.0');
     }
 }

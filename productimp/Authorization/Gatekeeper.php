@@ -2,6 +2,14 @@
 
 class productimp_Authorization_Gatekeeper {
 
+  /**
+   * GenerateAuthKey function generates an authentication URL for the user to obtain a WooCommerce API key.
+   *
+   * The function creates an endpoint URL, sets up the required parameters for the authentication request, 
+   * builds a query string from these parameters, and redirects the user to the authentication URL.
+   *
+   * @return void
+   */
   public function generateAuthKey()
   {
     $ntwcwp_current_url = "https://$_SERVER[HTTP_HOST]";
@@ -9,11 +17,11 @@ class productimp_Authorization_Gatekeeper {
     $endpoint = '/wc-auth/v1/authorize';
 
     $params = [
-      'app_name' => 'NT Woocommerce Product Importer', // Auto Generated name for package.
+      'app_name' => 'NT Woocommerce Product Importer',
       'scope' => 'read_write',
-      'user_id' => 1, // Current Logged in Userid //TODO: Use current logged in user
+      'user_id' => get_current_user_id(),
       'return_url' => $ntwcwp_current_url,
-      'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/gatekeeper/store' //Callback URL for storing data.
+      'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/gatekeeper/store'
     ];
 
     $authentication_url = $ntwcwp_current_url . $endpoint . '?' . http_build_query($params);
@@ -22,7 +30,10 @@ class productimp_Authorization_Gatekeeper {
   }
 
   /**
-   * Function for Saving Authorization data from WooCommerce Rest API.
+   * StoreAuthKey function stores the authentication key details in the WordPress options table.
+   *
+   * The function retrieves the input data as a JSON object, checks if the required fields exist, 
+   * and stores the data as a JSON string in the WordPress options table.
    * 
    * @return void
    */
@@ -46,7 +57,6 @@ class productimp_Authorization_Gatekeeper {
     add_option("productimp_rest", json_encode($dataToStore));
   }
 
-
   public function isAuthorized()
   {
     $wooCommerceAuthorized = get_option("productimp_rest");
@@ -64,5 +74,4 @@ class productimp_Authorization_Gatekeeper {
       'message' => 'Authorized'
     ];
   }
-  
 }
