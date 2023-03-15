@@ -53,7 +53,7 @@ class ProductImp {
      * 
      * @return void
      */
-    private function addMenu()
+    public function addMenu()
     {
         add_menu_page(
             'productimp', 

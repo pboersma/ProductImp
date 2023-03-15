@@ -1,5 +1,4 @@
 <?php
-
 namespace ProductImp\Database\Migrations;
 
 class CreateDatasourcesTable
