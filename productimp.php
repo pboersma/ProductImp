@@ -13,11 +13,11 @@
  * Author URI: https://boersma.dev/wordpress
  * Text Domain: productimp 
  */
+use ProductImp\ProductImp;
+
 include_once  __DIR__ . '/vendor/autoload.php';
-require_once dirname(__FILE__) . '/Autoloader.php';
-productimp_Autoloader::register();
+$productimp = new ProductImp();
 
-$productimp = new productimp_ProductImporter();
-
-register_activation_hook( __FILE__, array($productimp, 'setup'));
+// register_activation_hook( __FILE__, array($productimp, 'setup'));
+// register_deactivation_hook(__FILE__,array($productimp, 'deactivate'));
 add_action('wp_loaded', array($productimp, 'load'));

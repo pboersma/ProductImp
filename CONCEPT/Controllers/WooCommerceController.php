@@ -37,6 +37,7 @@ class productimp_Controllers_WooCommerceController
             $wooCommerceAuthorized['consumer_key'],
             $wooCommerceAuthorized['consumer_secret'],
             [
+              'timeout' => 120, // 2 Minute Timeout
               'version' => 'wc/v3',
             ]
         );
@@ -52,35 +53,27 @@ class productimp_Controllers_WooCommerceController
             );
         }
 
-        $client = new GuzzleClient();
+        $productMapping = new WP_REST_Request('POST', '/productimp/v1/products/map/get');
+        $productMapping->set_body(['product_id' => $request['product_id']]);
+        $response = rest_do_request($productMapping);
+        $productMapping = $response->get_data()[0];
 
-        $productMapping = json_decode($client->request(
-            'POST',
-            'https://boersma.dev/wp-json/productimp/v1/products/map/get',
-            [
-                'json' => [
-                    'product_id' => $request['product_id']
-                ]
-            ]
-        )->getBody()->getContents(), true)[0];
-
-        $product =  json_decode($client->request(
-            'GET',
-            'https://boersma.dev/wp-json/productimp/v1/products/read',
-            [
-                'json' => [
-                    'id' => $request['product_id']
-                ]
-            ]
-        )->getBody()->getContents(), true)['data'];
+        $product = new WP_REST_Request('GET', '/productimp/v1/products/read');
+        $product->set_body(['id' => $request['product_id']]);
+        $response = rest_do_request($product);
+        $product = $response->get_data()['data'];
 
         $data = $this->interpretMapping(
-            json_decode($productMapping['map'], true), 
-            json_decode($product['product'], true)
+            json_decode($productMapping->map, true), 
+            json_decode($product->product, true)
         );
 
-        $wooCommerceResponse = $woocommerce->post('products', $data);
+        $images = $data['images'];
+
+        unset($data['sku']);
         
+        $wooCommerceResponse = $woocommerce->post('products', $data);
+
         // Insert mapped product & woocommerce product id for keeping track of product.
         global $wpdb;
 
@@ -98,6 +91,29 @@ class productimp_Controllers_WooCommerceController
             ], 
             200
         );
+    }
+
+    public function getProducts()
+    {
+        try {
+            global $wpdb;
+            $table = $wpdb->prefix . 'pi_products_woocommerce';
+
+            return new WP_REST_Response(
+                [
+                    'data' => $wpdb->get_results("SELECT * FROM $table")
+                ], 
+                200
+            );
+        } catch(\Exception $e) {
+            return new WP_Error(
+                'caught_exception',
+                $e->getMessage(),
+                [
+                    'status' => 500
+                ]
+            );
+        }
     }
 
     public function findProduct(WP_REST_Request $request): WP_REST_Response | WP_Error
@@ -142,9 +158,7 @@ class productimp_Controllers_WooCommerceController
 
             // Concat
             if((bool) preg_match('/\./', $value['product_field_id'])) {
-                // images[0].src
                 $selectors = explode(".", $value['product_field_id']);
-                // []
 
                 if($value['woocommerce_field_id'] === 'images') {
                     foreach($product[$selectors[0]][$selectors[1]] as $key => $image) {

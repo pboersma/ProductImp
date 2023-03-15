@@ -1,4 +1,5 @@
 <?php
+namespace ProductImp;
 
 class productimp_ProductImporter
 {
@@ -45,20 +46,23 @@ class productimp_ProductImporter
         $products_table = "CREATE TABLE wp_pi_products (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             datasource_id varchar(255) NOT NULL,
-            product varchar(1000) DEFAULT '{}' NOT NULL,
+            ean varchar(255),
+            product varchar(15000) DEFAULT '{}' NOT NULL,
             created_on timestamp DEFAULT NOW() NULL,
+            UNIQUE (ean),
             PRIMARY KEY  (id)
         ) $charset_collate";
 
         $products_map_table = "CREATE TABLE wp_pi_products_map (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             product_id varchar(255) NOT NULL,
-            map varchar(1000) DEFAULT '{}' NOT NULL,
+            map varchar(15000) DEFAULT '{}' NOT NULL,
             created_on timestamp DEFAULT NOW() NULL,
+            UNIQUE (product_id),
             PRIMARY KEY  (id)
         ) $charset_collate";
 
-        $products_map_table = "CREATE TABLE wp_pi_products_woocommerce (
+        $products_woocommerce_table = "CREATE TABLE wp_pi_products_woocommerce (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             product_id varchar(255) NOT NULL,
             woocommerce_product_id varchar(255) NOT NULL,
@@ -69,7 +73,12 @@ class productimp_ProductImporter
         $this->createTable('pi_datasources', $datasource_table);
         $this->createTable('pi_products', $products_table);
         $this->createTable('pi_products_map', $products_map_table);
-        $this->createTable('pi_products_woocommerce', $products_map_table);
+        $this->createTable('pi_products_woocommerce', $products_woocommerce_table);
+    }
+
+    public function deactivate()
+    {
+        delete_option("productimp_rest");
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
+namespace ProductImp\Controllers;
 
-class productimp_Authorization_Gatekeeper {
-
+class AuthorizationController
+{
   /**
    * GenerateAuthKey function generates an authentication URL for the user to obtain a WooCommerce API key.
    *
@@ -13,18 +14,16 @@ class productimp_Authorization_Gatekeeper {
   public function generateAuthKey()
   {
     $ntwcwp_current_url = "https://$_SERVER[HTTP_HOST]";
-
-    $endpoint = '/wc-auth/v1/authorize';
-
+    
     $params = [
-      'app_name' => 'NT Woocommerce Product Importer',
+      'app_name' => 'Product Imp',
       'scope' => 'read_write',
       'user_id' => get_current_user_id(),
-      'return_url' => $ntwcwp_current_url,
-      'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/gatekeeper/store'
+      'return_url' => $ntwcwp_current_url . '/wp-admin/admin.php?page=productimp_product_import',
+      'callback_url' => wp_nonce_url($ntwcwp_current_url . '/wp-json/productimp/v1/authorization/store', 'wc_authentication_nonce')
     ];
 
-    $authentication_url = $ntwcwp_current_url . $endpoint . '?' . http_build_query($params);
+    $authentication_url = $ntwcwp_current_url . '/wc-auth/v1/authorize?' . http_build_query($params);
 
     exit(wp_redirect($authentication_url));
   }

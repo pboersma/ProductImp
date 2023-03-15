@@ -1,9 +1,13 @@
 <?php
+namespace App\Controllers;
 
-class productimp_Controllers_ProductController implements productimp_Controllers_Interfaces_iController
+// use App\Controllers\Interfaces\productimp_Controllers_Interfaces_iController;
+use App\Constants\Errors;
+
+class productimp_Controllers_DataSourceController
 {
-    private $table = 'pi_products';
-    private $tableSchema = ['datasource_id', 'product'];
+    private $table = 'pi_datasources';
+    private $tableSchema = ['datasource_name', 'datasource_url', 'datasource_credentials'];
 
     /**
      * @inheritdoc
@@ -16,7 +20,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
 
             return new WP_REST_Response(
                 [
-                    'data' => $wpdb->get_results("SELECT * FROM $table")
+                    'data' => $wpdb->get_results("SELECT id, datasource_name, datasource_url FROM $table")
                 ], 
                 200
             );
@@ -44,7 +48,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
                 $fieldsNotFound[] = $field;
             }
         }
-     
+
         // Early exit if required fields are missing from the request.
         if ($fieldsNotFound) {
             return new WP_Error(
@@ -61,16 +65,17 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             global $wpdb;
             $table_name = $wpdb->prefix . $this->table;
     
-            $response = $wpdb->insert(
+            $wpdb->insert(
                 $table_name,
                 [
-                    'datasource_id'          => $request['datasource_id'],
-                    'product'                => json_encode($request['product']),
+                    'datasource_name'        => $request['datasource_name'],
+                    'datasource_url'         => $request['datasource_url'],
+                    'datasource_credentials' => json_encode($request['datasource_credentials'])
                 ]
             );
     
             return new WP_REST_Response([
-                'message' => $response
+                'message' => 'Succesfully stored datasource'
             ], 200);
         } catch(\Exception $e) {
             return new WP_Error(
@@ -95,7 +100,7 @@ class productimp_Controllers_ProductController implements productimp_Controllers
             $id = $request['id'];
             return new WP_REST_Response(
                 [
-                    'data' => $wpdb->get_row("SELECT * FROM $table WHERE id = $id")
+                    'data' => $wpdb->get_row("SELECT id, datasource_name, datasource_url, created_on FROM $table WHERE id = $id")
                 ], 
                 200
             );
@@ -190,93 +195,91 @@ class productimp_Controllers_ProductController implements productimp_Controllers
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function map(WP_REST_Request $request): WP_REST_Response | WP_Error
+    public function sync(WP_REST_Request $request): WP_REST_Response | WP_Error
     {
-        // Validate that the request has an id for the datasource to update.
-        if(!$request['product_id']) {
-            return new WP_Error(
-                'missing_fields',
-                'Missing Required Fields',
+        $body = $request->get_body();
+
+        if(!$body) {
+            return  new WP_REST_Response(
                 [
-                    'status' => 400,
-                    'fields' => 'id'
-                ]
-            );
-        }
-
-        try {
-            global $wpdb;
-
-            $wpdb->replace(
-                'wp_pi_products_map',
-                [
-                    'product_id'             => $request['product_id'],
-                    'map'                    => json_encode($request['map']),
-                ]
-            );
-
-            return new WP_REST_Response([
-                'message' => $response
-            ], 
-            200);
-        } catch(\Exception $e) {
-            // Throw exception
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMap(WP_REST_Request $request): WP_REST_Response | WP_Error
-    {
-        try {
-            global $wpdb;
-            $table = $wpdb->prefix . $this->table;
-
-            $id = $request['product_id'];
-            return new WP_REST_Response(
-                [
-                    $wpdb->get_row("SELECT * FROM wp_pi_products_map WHERE product_id = '$id';")
+                    'message' => Errors::APP_GENERIC_DATA_PROCESSING_ERROR
                 ], 
-                200
-            );
-        } catch(\Exception $e) {
-            return new WP_Error(
-                'caught_exception',
-                $e->getMessage(),
-                [
-                    'status' => 500
-                ]
-                );
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMappings(): WP_REST_Response | WP_Error
-    {
-        try {
-            global $wpdb;
-            $table = 'wp_pi_products_map';
-
-            return new WP_REST_Response(
-                [
-                    'data' => $wpdb->get_results("SELECT * FROM $table")
-                ], 
-                200
-            );
-        } catch(\Exception $e) {
-            return new WP_Error(
-                'caught_exception',
-                $e->getMessage(),
-                [
-                    'status' => 500
-                ]
+                400
             );
         }
+        
+        var_dump($body);
+        die;
+
+        // try {
+        //     if(!$request['id']) {
+        //         return new WP_REST_Response(
+        //             [
+        //                 'message' => "No Datasource ID sent, Skipping."
+        //             ], 
+        //             200
+        //         );
+        //     }
+
+        //     $id = $request['id'];
+
+
+        //     global $wpdb;
+        //     $table = $wpdb->prefix . $this->table;
+
+        //     $datasource = $wpdb->get_row("SELECT id, datasource_name, datasource_url, datasource_credentials FROM $table WHERE id = $id");
+
+        
+        //     if(!$datasource) {
+        //         return new WP_REST_Response(
+        //             [
+        //                 'message' => "No Datasource found with supplied id"
+        //             ], 
+        //             200
+        //         );
+        //     }
+
+        //     // Set Guzzle Client.
+        //     $client = new Client([
+        //         'base_uri' => "https://$_SERVER[HTTP_HOST]"
+        //     ]);
+
+        //     $datasource_credentials = json_decode($datasource->datasource_credentials, true);
+
+        //     $response = $this->sendRequest(
+        //         $client, 
+        //         $datasource->datasource_url, 
+        //         $datasource_credentials['username'], 
+        //         $datasource_credentials['password']
+        //     );
+
+        //     $data = $this->parseResponse($response);
+
+        //     // Insert all products one-by-one.
+        //     foreach ($data as $product) {
+        //         $response = $client->request(
+        //             'POST',
+        //             'wp-json/productimp/v1/products/create',
+        //             [
+        //                 'form_params' => [
+        //                     "datasource_id" => $datasource->id,
+        //                     "ean" => $product['ean'],
+        //                     "product" => $product
+        //                 ]
+        //             ]
+        //         );
+        //     }
+
+        //     return new WP_REST_Response(
+        //         [
+        //             'message' => $response->getBody()->getContents()
+        //         ], 
+        //         200
+        //     );
+        // } catch (\Exception $e) {
+        //     // Log the error
+        //     error_log('Error while fetching data: ' . $e->getMessage());
+        //     return false;
+        // }
     }
 }

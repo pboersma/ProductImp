@@ -1,4 +1,6 @@
 <?php
+namespace App\Controllers\Interfaces;
+
 interface productimp_Controllers_Interfaces_iController
 {
     /**

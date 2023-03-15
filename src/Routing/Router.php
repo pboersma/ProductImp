@@ -1,6 +1,7 @@
 <?php
+namespace ProductImp\Routing;
 
-class productimp_Routing_Router {
+class Router {
     private $routesFile = 'Config/routes.json';
 
     public function get_routes()
@@ -23,7 +24,8 @@ class productimp_Routing_Router {
 
     public function authenticate()
     {
-      // TODO: Write rest-api authentication. Examples: https://cdn2.hubspot.net/hubfs/298401/Documents_for_download/WP-API-ebook_final_09162015.pdf
       return true;
+      // User needs to be logged in to use the Custom Rest API of ProductImp
+      return is_user_logged_in();
     }
 }

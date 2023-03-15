@@ -13,6 +13,7 @@ import {
   faFloppyDisk,
   faShop,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import App from './App.vue';
 import store from './store';
 import './assets/tailwind.css';

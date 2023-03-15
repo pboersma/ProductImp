@@ -1,0 +1,50 @@
+[
+    {
+        "route": "/datasources",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\DataSourceController",
+        "callback": "read"
+    },
+    {
+        "route": "/datasource",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\DataSourceController",
+        "callback": "create"
+    },
+    {
+        "route": "/datasource/(?P<id>\\d+)",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\DataSourceController",
+        "callback": "readSingle"
+    },
+    {
+        "route": "/datasource/(?P<id>\\d+)",
+        "methods": "PUT",
+        "class": "ProductImp\\Controllers\\DataSourceController",
+        "callback": "update"
+    },
+    {
+        "route": "/datasource/(?P<id>\\d+)",
+        "methods": "DELETE",
+        "class": "ProductImp\\Controllers\\DataSourceController",
+        "callback": "delete"
+    },
+    {
+        "route": "/authorization/generate",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\AuthorizationController",
+        "callback": "generateAuthKey"
+    },
+    {
+        "route": "/authorization/store",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\AuthorizationController",
+        "callback": "storeAuthKey"
+    },
+    {
+        "route": "/authorization/authorized",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\AuthorizationController",
+        "callback": "isAuthorized"
+    }
+]

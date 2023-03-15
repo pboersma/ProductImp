@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-4": {
+            "ProductImp\\": "src/"
+        }
+    },
     "require": {
         "automattic/woocommerce": "^3.0",
         "guzzlehttp/guzzle": "^7.4"

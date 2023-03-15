@@ -1,5 +1,29 @@
 [
     {
+        "route": "/gatekeeper/authorized",
+        "methods": "GET",
+        "class": "productimp_Authorization_Gatekeeper",
+        "callback": "isAuthorized"
+    },
+    {
+        "route": "/gatekeeper/authentication",
+        "methods": "GET",
+        "class": "productimp_Authorization_Gatekeeper",
+        "callback": "getAuthentication"
+    },
+    {
+        "route": "/gatekeeper/generate",
+        "methods": "GET",
+        "class": "productimp_Authorization_Gatekeeper",
+        "callback": "generateAuthKey"
+    },
+    {
+        "route": "/gatekeeper/store",
+        "methods": "POST",
+        "class": "productimp_Authorization_Gatekeeper",
+        "callback": "storeAuthKey"
+    },
+    {
         "route": "/datasources/list",
         "methods": "GET",
         "class": "productimp_Controllers_DataSourceController",
@@ -94,5 +118,11 @@
         "methods": "POST",
         "class": "productimp_Controllers_WooCommerceController",
         "callback": "findProduct"
+    },
+    {
+        "route": "/woocommerce/product/list",
+        "methods": "GET",
+        "class": "productimp_Controllers_WooCommerceController",
+        "callback": "getProducts"
     }
 ]
