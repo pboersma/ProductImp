@@ -2,6 +2,7 @@
 namespace ProductImp;
 
 use ProductImp\Routing\Router;
+use ProductImp\Database\Setup;
 
 class ProductImp {
     /**
@@ -11,13 +12,6 @@ class ProductImp {
      */
     private $router;
 
-    /**
-     * The view maker.
-     *
-     * @var productimp_Visualization_Viewmaker
-     */
-    private $viewMaker;
-
     public function __construct()
     {
         $this->router = new Router();
@@ -25,6 +19,8 @@ class ProductImp {
 
     /**
      * Loads the plugin into WordPress.
+     * 
+     * @return void
      */
     public function load()
     {
@@ -37,7 +33,45 @@ class ProductImp {
             }
         });
 
-        // // Initialize MenuItem + View.
-        // add_action('admin_menu', array($this->viewMaker, 'addMenuItem'));
+        // Initialize MenuItem + View.
+        add_action('admin_menu', array($this, 'addMenu'));
+    }
+
+    /**
+     * Setup the ProductImp Database requirements.
+     * 
+     * @return void
+     */
+    public function setup()
+    {
+        $database = new Setup();
+        $database->create();
+    }
+
+    /**
+     * Add the ProductImp to Wordpress.
+     * 
+     * @return void
+     */
+    private function addMenu()
+    {
+        add_menu_page(
+            'productimp', 
+            'ProductImp', 
+            'edit_posts', 
+            'productimp_product_import', 
+            function(){
+                echo "<div id='app'></div>";
+                wp_enqueue_script('productimp_app-chunk', plugin_dir_url( __FILE__ ) . 'dist/js/chunk-vendors.js', [], '1.0', true);
+                wp_enqueue_script('productimp_app-vue', plugin_dir_url( __FILE__ ) . 'dist/js/app.js', [], '1.0', true);
+                wp_enqueue_style('productimp_app-styling', plugin_dir_url( __FILE__ ) . 'dist/css/app.css', [], '1.0', 'all');
+                wp_enqueue_style('productimp_font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', [], '1.0', 'all');
+                wp_localize_script('productimp_app-vue', 'ProductImp', [
+                    'root' => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce('wp_rest'),
+                ]);
+            }, 
+            'dashicons-products'
+        );
     }
 }
