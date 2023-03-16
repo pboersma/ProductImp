@@ -27,8 +27,8 @@ const vuetify = createVuetify({
 import './assets/main.css'
 
 // Set Axios Defaults.
-// axios.defaults.baseURL = 'https://boersma.dev/wp-json';
-// axios.defaults.headers.common['Authorization'] = 'Basic cC5ib2Vyc21hQGx5Y2FuLW1lZGlhLm5sOmZ1Vmsgbm5oZyBpRWZ2IDV2RjMgVWdPTiBBVE5C'
+axios.defaults.baseURL = 'https://boersma.dev/wp-json';
+axios.defaults.headers.common['Authorization'] = 'Basic cC5ib2Vyc21hQGx5Y2FuLW1lZGlhLm5sOmZ1Vmsgbm5oZyBpRWZ2IDV2RjMgVWdPTiBBVE5C'
 
 declare global {
     interface Window {
@@ -36,8 +36,8 @@ declare global {
     }
 }
 
-axios.defaults.baseURL = window.ProductImp.root;
-axios.defaults.headers.common['X-WP-Nonce'] = window.ProductImp.nonce;
+// axios.defaults.baseURL = window.ProductImp.root;
+// axios.defaults.headers.common['X-WP-Nonce'] = window.ProductImp.nonce;
 
 const app = createApp(App)
 

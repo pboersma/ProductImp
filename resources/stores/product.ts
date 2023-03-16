@@ -11,11 +11,14 @@ export const useProductStore = defineStore('products', () => {
 
         products.value = response[0].map((item: any) => {
             const product = JSON.parse(item.product);
-            console.log(item);
 
             return {
                 datasource: item.datasource_id,
-                name: product.name
+                id: item.id,
+                mapped: 'true',
+                synced: 'false',
+                name: product.name,
+                product: product
             }
         })
     }
