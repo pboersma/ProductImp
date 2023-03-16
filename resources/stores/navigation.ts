@@ -15,8 +15,7 @@ export const useNavigationStore = defineStore('navigation', () => {
     const isAuthorized: Ref<boolean> = ref(false);
 
     const authorize = async () => {
-        const response = await authorizeClient();
-        console.log(response);
+        window.location.href = await authorizeClient();
     }
 
     /**

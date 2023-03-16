@@ -27,7 +27,7 @@ export const getAuthorizationStatus = async (): Promise<boolean> => {
 export const authorizeClient = async (): Promise<any> => {
     return await axios.get(`/productimp/v1/authorization/generate`)
         .then((response: AxiosCustomResponse) => {
-            console.log(response);
+            return response.data
         })
         .catch(error => {
             throw error
