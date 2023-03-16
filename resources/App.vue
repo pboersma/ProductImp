@@ -31,7 +31,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-app style="background-color: rgb(255, 255, 255)">
+  <v-app>
     <Navigation />
     <v-container>
       <component v-if="!loading" :is="mapTypeComponents[navigation.page]"></component>

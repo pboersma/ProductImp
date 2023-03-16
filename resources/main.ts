@@ -27,7 +27,7 @@ const vuetify = createVuetify({
 import './assets/main.css'
 
 // Set Axios Defaults.
-// axios.defaults.baseURL = 'https://boersma.dev/';
+// axios.defaults.baseURL = 'https://boersma.dev/wp-json';
 // axios.defaults.headers.common['Authorization'] = 'Basic cC5ib2Vyc21hQGx5Y2FuLW1lZGlhLm5sOmZ1Vmsgbm5oZyBpRWZ2IDV2RjMgVWdPTiBBVE5C'
 
 declare global {
