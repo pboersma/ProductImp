@@ -11,7 +11,7 @@ interface AxiosCustomResponseData {
 }
 
 export const getAuthorizationStatus = async (): Promise<boolean> => {
-    return await axios.get(`/wp-json/productimp/v1/authorization/authorized`)
+    return await axios.get(`/productimp/v1/authorization/authorized`)
         .then((response: AxiosCustomResponse) => {
             if (response.data.status === 401) {
                 return false
@@ -25,7 +25,7 @@ export const getAuthorizationStatus = async (): Promise<boolean> => {
 };
 
 export const authorizeClient = async (): Promise<any> => {
-    return await axios.get(`/wp-json/productimp/v1/authorization/generate`)
+    return await axios.get(`/productimp/v1/authorization/generate`)
         .then((response: AxiosCustomResponse) => {
             console.log(response);
         })
