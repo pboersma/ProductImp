@@ -4,13 +4,15 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 
 // Store
 import { useProductStore } from '@/stores/product'
+import { useDialogStore } from '@/stores/dialog'
 
+const productStore = useProductStore()
+const dialogStore = useDialogStore()
+
+// Datatable
 const itemsPerPage = ref(10)
 const search = ref('')
-
-const product = useProductStore()
 const expanded = ref([])
-
 const headers = reactive([
   {
     title: '',
@@ -30,16 +32,17 @@ const headers = reactive([
     key: 'synced'
   },
   {
-    title: '',
+    title: 'Actions',
     key: 'actions',
     sortable: false
   }
 ])
 
+// General
 const loading = ref(true)
 
 onMounted(async () => {
-  await product.fetchAll()
+  await productStore.fetchAll()
   loading.value = false
 })
 </script>
@@ -53,7 +56,7 @@ onMounted(async () => {
       v-model:items-per-page="itemsPerPage"
       dense
       :headers="headers"
-      :items="product.products"
+      :items="productStore.products"
       item-value="name"
       :search="search"
       class="elevation-1"
@@ -65,19 +68,29 @@ onMounted(async () => {
         <v-icon color="red" icon="mdi-close"></v-icon>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn variant="text" size="small" icon="mdi-sync"></v-btn>
-        <v-btn variant="text" size="small" icon="mdi-cog"></v-btn>
+        <v-btn
+          color="primary"
+          title="Synchronize"
+          variant="tonal"
+          class="me-3"
+          size="small"
+          icon="mdi-sync"
+        ></v-btn>
+        <v-btn
+          color="primary"
+          title="Configure"
+          variant="tonal"
+          size="small"
+          icon="mdi-cog"
+          @click="dialogStore.setDialog('MappingDialog', item.raw)"
+        ></v-btn>
       </template>
       <template v-slot:expanded-row="{ columns, item }">
         <tr>
           <td :colspan="columns.length">
             <v-table density="compact">
               <tbody>
-                <tr
-                  v-for="(value, key) in item.raw.product"
-                  :key="key"
-                  style="background-color: green !important"
-                >
+                <tr v-for="(value, key) in item.raw.product" :key="key">
                   <td>
                     <strong>{{ key }}</strong>
                   </td>

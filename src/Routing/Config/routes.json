@@ -60,6 +60,30 @@
         "callback": "delete"
     },
     {
+        "route": "/mappings",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "callback": "read"
+    },
+    {
+        "route": "/mapping",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "callback": "create"
+    },
+    {
+        "route": "/mapping/(?P<id>\\d+)",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "callback": "readSingle"
+    },
+    {
+        "route": "/mapping/(?P<id>\\d+)",
+        "methods": "DELETE",
+        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "callback": "delete"
+    },
+    {
         "route": "/authorization/generate",
         "methods": "GET",
         "class": "ProductImp\\Controllers\\AuthorizationController",
