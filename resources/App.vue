@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation.vue'
 // Pages
 import Unauthorized from '@/components/pages/Unauthorized.vue'
 import Datasources from '@/components/pages/Datasources.vue'
+import Products from '@/components/pages/Products.vue'
 
 // Store
 import { useNavigationStore } from '@/stores/navigation'
@@ -19,7 +20,8 @@ const navigation = useNavigationStore()
 // TODO: Strongly type this variable.
 const mapTypeComponents: any = {
   Unauthorized: Unauthorized,
-  Datasources: Datasources
+  Datasources: Datasources,
+  Products: Products
 }
 
 onMounted(async () => {
