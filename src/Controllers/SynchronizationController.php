@@ -5,8 +5,6 @@ use ProductImp\Helpers\Validator;
 use ProductImp\Helpers\Request;
 use ProductImp\Constants\Http;
 use ProductImp\Constants\Errors;
-use GuzzleHttp\Client;
-
 
 class SynchronizationController
 {
@@ -60,21 +58,35 @@ class SynchronizationController
         if(!$datasource) {
             return Errors::APP_NO_DATASOURCE_FOUND;
         }
-
-        // Set Guzzle Client.
-        $client = new Client();
+    
         $datasource_credentials = json_decode($datasource->datasource_credentials, true);
 
         $requestHelper = new Request;
-
         $response = $requestHelper->sendRequest(
-            $client, 
             $datasource->datasource_url, 
             $datasource_credentials['username'], 
             $datasource_credentials['password']
         );
 
         $data = $requestHelper->parseResponse($response);
+
+        $productRequest = new \WP_REST_Request('POST', '/productimp/v1/product');
+        $productRequest->set_header('Content-Type', 'application/json');
+        
+        // Insert all products one-by-one.
+        foreach ($data as $product) {
+           
+            $productRequest->set_body(
+                json_encode(
+                    [
+                        'datasource_id' => $datasource->id,
+                        'product'       => json_encode($product)
+                    ]
+                )
+            );
+
+            rest_do_request($productRequest);
+        }
 
         return $data;
     }

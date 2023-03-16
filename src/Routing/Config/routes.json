@@ -30,6 +30,36 @@
         "callback": "delete"
     },
     {
+        "route": "/products",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\ProductsController",
+        "callback": "read"
+    },
+    {
+        "route": "/product",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\ProductsController",
+        "callback": "create"
+    },
+    {
+        "route": "/product/(?P<id>\\d+)",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\ProductsController",
+        "callback": "readSingle"
+    },
+    {
+        "route": "/product/(?P<id>\\d+)",
+        "methods": "PUT",
+        "class": "ProductImp\\Controllers\\ProductsController",
+        "callback": "update"
+    },
+    {
+        "route": "/product/(?P<id>\\d+)",
+        "methods": "DELETE",
+        "class": "ProductImp\\Controllers\\ProductsController",
+        "callback": "delete"
+    },
+    {
         "route": "/authorization/generate",
         "methods": "GET",
         "class": "ProductImp\\Controllers\\AuthorizationController",
@@ -46,5 +76,11 @@
         "methods": "GET",
         "class": "ProductImp\\Controllers\\AuthorizationController",
         "callback": "isAuthorized"
+    },
+    {
+        "route": "/synchronize",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\SynchronizationController",
+        "callback": "synchronize"
     }
 ]

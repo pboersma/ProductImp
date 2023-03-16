@@ -24,7 +24,6 @@ class Router {
 
     public function authenticate()
     {
-      return true;
       // User needs to be logged in to use the Custom Rest API of ProductImp
       return is_user_logged_in();
     }
