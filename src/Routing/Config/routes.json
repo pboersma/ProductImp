@@ -62,25 +62,25 @@
     {
         "route": "/mappings",
         "methods": "GET",
-        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "class": "ProductImp\\Controllers\\ProductsMappingController",
         "callback": "read"
     },
     {
         "route": "/mapping",
         "methods": "POST",
-        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "class": "ProductImp\\Controllers\\ProductsMappingController",
         "callback": "create"
     },
     {
         "route": "/mapping/(?P<id>\\d+)",
         "methods": "GET",
-        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "class": "ProductImp\\Controllers\\ProductsMappingController",
         "callback": "readSingle"
     },
     {
         "route": "/mapping/(?P<id>\\d+)",
         "methods": "DELETE",
-        "class": "ProductImp\\Controllers\\ProductsMappingsController",
+        "class": "ProductImp\\Controllers\\ProductsMappingController",
         "callback": "delete"
     },
     {

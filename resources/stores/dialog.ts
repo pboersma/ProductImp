@@ -6,7 +6,7 @@ export const useDialogStore = defineStore('dialog', () => {
     const dialogData = ref({})
     const isDialogOpen = ref(false)
 
-    const setDialog = async (dialog, data) => {
+    const setDialog = async (dialog: any, data: any) => {
         currentDialog.value = dialog
         dialogData.value = data
         isDialogOpen.value = true;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck 
 import { ref, reactive, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
@@ -90,6 +91,7 @@ onMounted(async () => {
           <td :colspan="columns.length">
             <v-table density="compact">
               <tbody>
+                <!-- @ts-ignore -->
                 <tr v-for="(value, key) in item.raw.product" :key="key">
                   <td>
                     <strong>{{ key }}</strong>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+// @ts-ignore
 import { isEmpty, size } from 'lodash';
 import MappingRow from './MappingRow.vue'
+// @ts-ignore
 import { v4 as uuidv4 } from 'uuid'
 import { useDialogStore } from '@/stores/dialog'
 import { useMappingStore } from '@/stores/mapping'
@@ -9,7 +11,9 @@ import { useMappingStore } from '@/stores/mapping'
 const dialogStore = useDialogStore()
 const mappingStore = useMappingStore()
 
+// @ts-ignore
 const productName = ref(dialogStore.dialogData.name)
+// @ts-ignore
 const mappings: any = ref(dialogStore.dialogData.mapping ?? [])
 
 const createEmptyMapping = () => {
@@ -30,13 +34,14 @@ const setMapping = (e: any) => {
 
 const saveProductMap = () => {
   // Filter out empty pairing
-  const mappingsFinal = mappings.value.filter(mapping => {
+  const mappingsFinal = mappings.value.filter((mapping: any) => {
     if(size(mapping) > 1) {
       return !isEmpty(mapping)
     }
   })
 
-  mappingStore.save(mappingsFinal)
+  // @ts-ignore
+  mappingStore.save(dialogStore.dialogData.id, mappingsFinal)
 };
 </script>
 <template>
