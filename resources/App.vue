@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import type { Ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // Global Components
 import Navigation from '@/components/Navigation.vue'
@@ -11,6 +12,8 @@ import Datasources from '@/components/pages/Datasources.vue'
 // Store
 import { useNavigationStore } from '@/stores/navigation'
 
+const loading: Ref<boolean> = ref(true)
+
 const navigation = useNavigationStore()
 
 // TODO: Strongly type this variable.
@@ -21,6 +24,7 @@ const mapTypeComponents: any = {
 
 onMounted(async () => {
   await navigation.checkAuthorization()
+  loading.value = false
 })
 </script>
 
@@ -28,7 +32,8 @@ onMounted(async () => {
   <v-app style="background-color: rgb(255, 255, 255)">
     <Navigation />
     <v-container>
-      <component :is="mapTypeComponents[navigation.page]"></component>
+      <component v-if="!loading" :is="mapTypeComponents[navigation.page]"></component>
+      <h2 style="text-align: center" v-if="loading">Loading..</h2>
     </v-container>
   </v-app>
 </template>
