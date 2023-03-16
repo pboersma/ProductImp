@@ -20,12 +20,12 @@ class AuthorizationController
       'scope' => 'read_write',
       'user_id' => get_current_user_id(),
       'return_url' => $ntwcwp_current_url . '/wp-admin/admin.php?page=productimp_product_import',
-      'callback_url' => wp_nonce_url($ntwcwp_current_url . '/wp-json/productimp/v1/authorization/store', 'wc_authentication_nonce')
+      'callback_url' => $ntwcwp_current_url . '/wp-json/productimp/v1/authorization/store'
     ];
 
     $authentication_url = $ntwcwp_current_url . '/wc-auth/v1/authorize?' . http_build_query($params);
 
-    exit(wp_redirect($authentication_url));
+    return $authentication_url;
   }
 
   /**

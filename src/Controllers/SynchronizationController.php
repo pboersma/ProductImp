@@ -80,7 +80,7 @@ class SynchronizationController
                 json_encode(
                     [
                         'datasource_id' => $datasource->id,
-                        'product'       => json_encode($product)
+                        'product'       => $product
                     ]
                 )
             );
