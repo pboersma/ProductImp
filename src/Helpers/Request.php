@@ -14,8 +14,11 @@ class Request
      *
      * @return \GuzzleHttp\Psr7\Response The response from the request
      */
-    public function sendRequest(Client $client, $endpoint, $username = null, $password = null)
+    public function sendRequest($endpoint, $username = null, $password = null)
     {
+        // Set Guzzle Client.
+        $client = new Client();
+        
         $options = ['stream' => true];
         
         if ($username !== null && $password !== null) {
