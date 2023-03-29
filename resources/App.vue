@@ -44,7 +44,13 @@ onMounted(async () => {
     <v-container>
       <component v-if="!loading" :is="mapPageComponents[navigationStore.page]"></component>
       <component v-if="!loading" :is="mapDialogComponents[dialogStore.currentDialog]"></component>
-      <h2 style="text-align: center" v-if="loading">Loading..</h2>
+      <div style="text-align: center;" v-if="loading">
+        <img style="height: 3em;" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+      </div>
     </v-container>
   </v-app>
 </template>
+<style lang="scss">
+@use 'vuetify/styles';
+@import 'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css';
+</style>

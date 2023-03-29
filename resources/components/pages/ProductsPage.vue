@@ -1,14 +1,18 @@
 <script setup lang="ts">
-// @ts-nocheck 
+// @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
 // Store
 import { useProductStore } from '@/stores/product'
+import { useMappingStore } from '@/stores/mapping'
 import { useDialogStore } from '@/stores/dialog'
 
 const productStore = useProductStore()
 const dialogStore = useDialogStore()
+const mappingStore = useMappingStore()
+
+const products = ref()
 
 // Datatable
 const itemsPerPage = ref(10)
@@ -44,6 +48,22 @@ const loading = ref(true)
 
 onMounted(async () => {
   await productStore.fetchAll()
+  await mappingStore.fetchAll()
+
+  if (productStore.products) {
+    if (mappingStore.mappings) {
+      products.value = productStore.products.map((item: any) => {
+        const mapping = mappingStore.mappings.find((mapping: any) => mapping.product_id === item.id)
+
+        if (mapping) {
+          return { ...item, mapping: JSON.parse(mapping.map), mapped: true }
+        }
+
+        return item
+      })
+    }
+  }
+
   loading.value = false
 })
 </script>
@@ -57,13 +77,14 @@ onMounted(async () => {
       v-model:items-per-page="itemsPerPage"
       dense
       :headers="headers"
-      :items="productStore.products"
+      :items="products"
       item-value="name"
       :search="search"
       class="elevation-1"
     >
       <template v-slot:item.mapped="{ item }">
-        <v-icon color="green" icon="mdi-check"></v-icon>
+        <v-icon v-if="item.raw.mapped" color="green" icon="mdi-check"></v-icon>
+        <v-icon v-else color="red" icon="mdi-close"></v-icon>
       </template>
       <template v-slot:item.synced="{ item }">
         <v-icon color="red" icon="mdi-close"></v-icon>
@@ -105,4 +126,7 @@ onMounted(async () => {
       </template>
     </v-data-table>
   </v-card>
+  <div style="text-align: center" v-if="loading">
+    <img style="height: 3em" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+  </div>
 </template>

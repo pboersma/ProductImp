@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
+
 // @ts-ignore
-import { isEmpty, size } from 'lodash';
+import { isEmpty, size } from 'lodash'
 import MappingRow from './MappingRow.vue'
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid'
@@ -35,14 +38,24 @@ const setMapping = (e: any) => {
 const saveProductMap = () => {
   // Filter out empty pairing
   const mappingsFinal = mappings.value.filter((mapping: any) => {
-    if(size(mapping) > 1) {
+    if (size(mapping) > 1) {
       return !isEmpty(mapping)
     }
   })
 
   // @ts-ignore
   mappingStore.save(dialogStore.dialogData.id, mappingsFinal)
-};
+
+  dialogStore.closeDialog()
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Succesfully stored mapping',
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: true
+  })
+}
 </script>
 <template>
   <v-dialog v-model="dialogStore.isDialogOpen" persistent width="40%">
@@ -90,3 +103,6 @@ const saveProductMap = () => {
     </v-card>
   </v-dialog>
 </template>
+<style lang="scss">
+@import '@sweetalert2/theme-material-ui/material-ui.scss';
+</style>

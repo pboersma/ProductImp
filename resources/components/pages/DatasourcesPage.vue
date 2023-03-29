@@ -34,4 +34,7 @@ onMounted(async () => {
     item-value="name"
     class="elevation-1"
   ></v-data-table-virtual>
+  <div style="text-align: center" v-if="loading">
+    <img style="height: 3em" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+  </div>
 </template>

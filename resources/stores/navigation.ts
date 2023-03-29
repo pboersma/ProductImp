@@ -6,6 +6,7 @@ import { getAuthorizationStatus, authorizeClient } from '@/services/Authorizatio
 export const useNavigationStore = defineStore('navigation', () => {
     // Navigation Handling Store.
     const page: Ref<string> = ref('UnauthorizedPage')
+    const loading: Ref<boolean> = ref(true);
 
     const setPage = (newPage: string) => {
         page.value = newPage;
@@ -36,6 +37,7 @@ export const useNavigationStore = defineStore('navigation', () => {
         page,
         checkAuthorization,
         isAuthorized,
-        authorize
+        authorize,
+        loading
     }
 })

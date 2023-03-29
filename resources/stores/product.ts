@@ -15,7 +15,7 @@ export const useProductStore = defineStore('products', () => {
             return {
                 datasource: item.datasource_id,
                 id: item.id,
-                mapped: 'true',
+                mapped: false,
                 mapping: [],
                 synced: 'false',
                 name: product.name,

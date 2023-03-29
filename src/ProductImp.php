@@ -33,11 +33,13 @@ class ProductImp {
             }
         });
 
+        add_action('admin_init', array($this, 'stylesheet'));
+
         // Initialize MenuItem + View.
         add_action('admin_menu', array($this, 'addMenu'));
     }
 
-    /**
+/**
      * Setup the ProductImp Database requirements.
      * 
      * @return void
