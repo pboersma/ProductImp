@@ -2,15 +2,20 @@
 // @ts-nocheck
 import { ref, reactive, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
+import Swal from 'sweetalert2'
+
+import LoadingPage from '@/components/pages/LoadingPage.vue'
 
 // Store
 import { useProductStore } from '@/stores/product'
 import { useMappingStore } from '@/stores/mapping'
+import { useWoocommerceStore } from '@/stores/woocommerce'
 import { useDialogStore } from '@/stores/dialog'
 
 const productStore = useProductStore()
 const dialogStore = useDialogStore()
 const mappingStore = useMappingStore()
+const wooCommerceStore = useWoocommerceStore()
 
 const products = ref()
 
@@ -46,20 +51,54 @@ const headers = reactive([
 // General
 const loading = ref(true)
 
+const checkStatus = (item: any) => {
+  if(!item.mapped) {
+    return true;
+  }
+  
+  if(item.synced) {
+    return true;
+  }
+
+  return false;
+}
+
+const save = async (id: any) => {
+  await Swal.fire({
+  title: 'Do you want to sync this product to WooCommerce?',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, sync it!',
+}).then(async (result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    await wooCommerceStore.save(id)
+    await Swal.fire('Synced!', '', 'success')
+  }
+})
+}
+
 onMounted(async () => {
   await productStore.fetchAll()
   await mappingStore.fetchAll()
+  await wooCommerceStore.fetchAll()
 
   if (productStore.products) {
-    if (mappingStore.mappings) {
+    if (mappingStore.mappings || wooCommerceStore.woocommerceProducts) {
       products.value = productStore.products.map((item: any) => {
         const mapping = mappingStore.mappings.find((mapping: any) => mapping.product_id === item.id)
+        const woocommerce = wooCommerceStore.woocommerceProducts.find((woocommerce: any) => woocommerce.product_id === item.id)
+
+        let mutatedItem = { ...item}
 
         if (mapping) {
-          return { ...item, mapping: JSON.parse(mapping.map), mapped: true }
+          mutatedItem = { ...mutatedItem, mapping: JSON.parse(mapping.map), mapped: true }
         }
 
-        return item
+        if(woocommerce) {
+          mutatedItem = { ...mutatedItem, synced: true }
+        }
+
+        return mutatedItem
       })
     }
   }
@@ -87,7 +126,8 @@ onMounted(async () => {
         <v-icon v-else color="red" icon="mdi-close"></v-icon>
       </template>
       <template v-slot:item.synced="{ item }">
-        <v-icon color="red" icon="mdi-close"></v-icon>
+        <v-icon v-if="item.raw.synced" color="green" icon="mdi-check"></v-icon>
+        <v-icon v-else color="red" icon="mdi-close"></v-icon>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn
@@ -97,6 +137,8 @@ onMounted(async () => {
           class="me-3"
           size="small"
           icon="mdi-sync"
+          :disabled="checkStatus(item.raw)"
+          @click="save(item.raw.id)"
         ></v-btn>
         <v-btn
           color="primary"
@@ -126,7 +168,5 @@ onMounted(async () => {
       </template>
     </v-data-table>
   </v-card>
-  <div style="text-align: center" v-if="loading">
-    <img style="height: 3em" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
-  </div>
+  <LoadingPage v-if="loading" />
 </template>

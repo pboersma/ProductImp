@@ -11,7 +11,7 @@ interface AxiosCustomResponseData {
 }
 
 export const getAll = async (): Promise<any> => {
-    return await axios.get(`/productimp/v1/mappings`)
+    return await axios.get(`/productimp/v1/woocommerce`)
         .then((response: AxiosCustomResponse) => {
             return response.data;
         })
@@ -21,7 +21,7 @@ export const getAll = async (): Promise<any> => {
 };
 
 export const store = async (payload: any): Promise<any> => {
-    return await axios.post(`/productimp/v1/mapping`, payload)
+    return await axios.post(`/productimp/v1/woocommerce/${payload.product_id}`)
         .then((response: AxiosCustomResponse) => {
             return response.data;
         })

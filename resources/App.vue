@@ -9,6 +9,7 @@ import Navigation from '@/components/NavigationBar.vue'
 import UnauthorizedPage from '@/components/pages/UnauthorizedPage.vue'
 import DatasourcesPage from '@/components/pages/DatasourcesPage.vue'
 import ProductsPage from '@/components/pages/ProductsPage.vue'
+import LoadingPage from '@/components/pages/LoadingPage.vue'
 
 import MappingDialog from '@/components/dialogs/MappingDialog.vue'
 
@@ -37,16 +38,13 @@ onMounted(async () => {
   loading.value = false
 })
 </script>
-
 <template>
   <v-app>
     <Navigation />
     <v-container>
       <component v-if="!loading" :is="mapPageComponents[navigationStore.page]"></component>
       <component v-if="!loading" :is="mapDialogComponents[dialogStore.currentDialog]"></component>
-      <div style="text-align: center;" v-if="loading">
-        <img style="height: 3em;" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
-      </div>
+      <LoadingPage v-if="loading" />
     </v-container>
   </v-app>
 </template>

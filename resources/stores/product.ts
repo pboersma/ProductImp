@@ -17,7 +17,7 @@ export const useProductStore = defineStore('products', () => {
                 id: item.id,
                 mapped: false,
                 mapping: [],
-                synced: 'false',
+                synced: false,
                 name: product.name,
                 product: product
             }

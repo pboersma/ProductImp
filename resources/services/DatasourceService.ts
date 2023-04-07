@@ -19,3 +19,16 @@ export const getDatasources = async (): Promise<any> => {
             throw error
         });
 };
+
+export const syncDatasource = async (id: any): Promise<any> => {
+    return await axios.post(`/productimp/v1/synchronize`, {
+        resource: 'DataSource',
+        id: id
+    })
+        .then((response: AxiosCustomResponse) => {
+            return response.data;
+        })
+        .catch(error => {
+            throw error
+        });
+};
