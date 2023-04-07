@@ -42,7 +42,7 @@ class WooCommerceController {
 
         // Create Woocommerce Client for the rest api calls.
         $woocommerce = new Client(
-            get_site_url(),
+            get_site_url() . '/',
             $wooCommerceAuthorized['consumer_key'],
             $wooCommerceAuthorized['consumer_secret'],
             [
@@ -181,10 +181,10 @@ class WooCommerceController {
                 }
             }
      
-            // Hardcode
-            if(preg_match('/\{\w*\}/', $value['product_field_id'])) {
-                $data[$value['woocommerce_field_id']] = str_replace(['{', '}'], '', $value['product_field_id']);
-            }
+            // // Hardcode
+            // if(preg_match('/\{\w*\}/', $value['product_field_id'])) {
+            //     $data[$value['woocommerce_field_id']] = str_replace(['{', '}'], '', $value['product_field_id']);
+            // }
      
             $data[$value['woocommerce_field_id']] = (string) $product[$value['product_field_id']] ?? null;
         }
