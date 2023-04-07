@@ -7,7 +7,7 @@ use ProductImp\Helpers\Validator;
 
 class ProductsController {
     private $table = 'pi_products';
-    private $tableSchema = ['datasource_id', 'product'];
+    private $tableSchema = ['datasource_id', 'product', 'ean'];
 
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
@@ -30,22 +30,36 @@ class ProductsController {
         global $wpdb;
         $table_name = $wpdb->prefix . $this->table;
 
-        $response = $wpdb->insert(
+        $response = $wpdb->update(
+            $table_name,
+            [
+                'datasource_id' => $request['datasource_id'],
+                'ean'           => $request['ean'],
+                'product'       => json_encode($request['product']),
+            ],
+            [
+                'ean' => $request['ean']
+            ]
+        );
+
+        if(!$response) {
+            $response = $wpdb->insert(
                 $table_name,
                 [
                     'datasource_id' => $request['datasource_id'],
+                    'ean'           => $request['ean'],
                     'product'       => json_encode($request['product']),
                 ]
             );
-        
-        // If the query went wrong for some reason, Return.
-        if(!$response) {
-            return new \WP_REST_Response(
-                [
-                    "message" => Errors::APP_GENERIC_DATA_PROCESSING_ERROR
-                ],
-                Http::HTTP_BAD_REQUEST
-            );
+
+            if(!$response) {
+                return new \WP_REST_Response(
+                    [
+                        "message" => Errors::APP_GENERIC_DATA_PROCESSING_ERROR
+                    ],
+                    Http::HTTP_BAD_REQUEST
+                );
+            }
         }
 
         // Everything was successfull.

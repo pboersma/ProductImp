@@ -19,5 +19,4 @@ include_once  __DIR__ . '/vendor/autoload.php';
 $productimp = new ProductImp();
 
 register_activation_hook(__FILE__, array($productimp, 'setup'));
-// register_deactivation_hook(__FILE__,array($productimp, 'deactivate'));
-add_action('wp_loaded', array($productimp, 'load'));
+add_action('wp_loaded', array($productimp, 'load'), 9999);

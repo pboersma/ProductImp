@@ -10,9 +10,11 @@ class CreateProductsTable
         $table = "CREATE TABLE $name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             datasource_id varchar(255) NOT NULL,
-            product varchar(8000) DEFAULT '{}' NOT NULL,
+            ean varchar(255) NOT NULL,
+            product varchar(15000) DEFAULT '{}' NOT NULL,
             created_on timestamp DEFAULT NOW() NULL,
-            PRIMARY KEY  (id)
+            PRIMARY KEY  (id),
+            UNIQUE KEY uq_ean (ean)
         ) $charset;";
 
         dbDelta( $table );

@@ -31,7 +31,7 @@ class ProductsMappingController {
         $table_name = $wpdb->prefix . $this->table;
 
         $response =  $wpdb->replace(
-            'wp_pipi_products_map',
+            'wp_pi_products_mapping',
             [
                 'product_id' => $request['product_id'],
                 'map' => json_encode($request['map']),
@@ -76,7 +76,7 @@ class ProductsMappingController {
             ['id'], 
             $request
         );
-
+        
         // If the Validator returned required fields, Early return.
         if(!empty($hasRequiredFields)) {
             return new \WP_REST_Response(
@@ -91,7 +91,7 @@ class ProductsMappingController {
         global $wpdb;
         $table = $wpdb->prefix . $this->table;
 
-        $response = $wpdb->get_row($wpdb->prepare("SELECT id, product_id, map FROM $table WHERE id = %d", $request['id']));
+        $response = $wpdb->get_row($wpdb->prepare("SELECT id, product_id, map FROM $table WHERE product_id = %d", $request['id']));
 
         return  new \WP_REST_Response(
             [

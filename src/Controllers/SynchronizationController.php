@@ -8,7 +8,7 @@ use ProductImp\Constants\Errors;
 
 class SynchronizationController
 {
-    private $syncables = ['DataSource'];
+    private $syncables = ['DataSource', 'WooCommerce'];
 
     public function synchronize(\WP_REST_Request $request): \WP_REST_Response
     {
@@ -45,7 +45,6 @@ class SynchronizationController
             ],
             Http::HTTP_OK
         );
-    
     }
 
     private function DataSource($id)
@@ -75,11 +74,11 @@ class SynchronizationController
         
         // Insert all products one-by-one.
         foreach ($data as $product) {
-           
             $productRequest->set_body(
                 json_encode(
                     [
                         'datasource_id' => $datasource->id,
+                        'ean'           => $product['ean'],
                         'product'       => $product
                     ]
                 )
@@ -88,6 +87,15 @@ class SynchronizationController
             rest_do_request($productRequest);
         }
 
+        $rows = $wpdb->get_results( "SELECT * FROM wp_pi_products_woocommerce");
+
+        if($rows) {
+            foreach ($rows as $product) {
+                $woocommerceRequest = new \WP_REST_Request('POST', '/productimp/v1/woocommerce/' . $product->product_id);
+                rest_do_request($woocommerceRequest); 
+            }
+        }
+            
         return $data;
     }
 }

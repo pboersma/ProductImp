@@ -84,6 +84,24 @@
         "callback": "delete"
     },
     {
+        "route": "/woocommerce",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\WooCommerceController",
+        "callback": "read"
+    },
+    {
+        "route": "/woocommerce/(?P<product_id>\\d+)",
+        "methods": "POST",
+        "class": "ProductImp\\Controllers\\WooCommerceController",
+        "callback": "create"
+    },
+    {
+        "route": "/woocommerce/(?P<product_id>\\d+)",
+        "methods": "GET",
+        "class": "ProductImp\\Controllers\\WooCommerceController",
+        "callback": "readSingle"
+    },
+    {
         "route": "/authorization/generate",
         "methods": "GET",
         "class": "ProductImp\\Controllers\\AuthorizationController",
