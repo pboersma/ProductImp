@@ -26,12 +26,11 @@ class ProductsMappingController {
                 Http::HTTP_BAD_REQUEST
             );
         }
-
         global $wpdb;
         $table_name = $wpdb->prefix . $this->table;
 
         $response =  $wpdb->replace(
-            'wp_pi_products_mapping',
+            $table_name,
             [
                 'product_id' => $request['product_id'],
                 'map' => json_encode($request['map']),

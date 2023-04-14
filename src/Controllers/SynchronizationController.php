@@ -87,7 +87,9 @@ class SynchronizationController
             rest_do_request($productRequest);
         }
 
-        $rows = $wpdb->get_results( "SELECT * FROM wp_pi_products_woocommerce");
+        $table_name = $wpdb->prefix . 'pi_products_woocommerce';
+
+        $rows = $wpdb->get_results( "SELECT * FROM $table_name");
 
         if($rows) {
             foreach ($rows as $product) {

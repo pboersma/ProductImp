@@ -62,8 +62,8 @@ class ProductImp {
             'productimp_product_import', 
             function(){
                 echo "<div id='app'></div>";
-                wp_enqueue_script('productimp_app-vue', plugin_dir_url( __FILE__ ) . 'dist/assets/index-39649418.js', [], '1.0', true);
-                wp_enqueue_style('productimp_app-styling', plugin_dir_url( __FILE__ ) . 'dist/assets/index-22f2eb3c.css', [], '1.0', 'all');
+                wp_enqueue_script('productimp_app-vue', plugin_dir_url( __FILE__ ) . 'dist/assets/index-ac666df4.js', [], '1.0', true);
+                wp_enqueue_style('productimp_app-styling', plugin_dir_url( __FILE__ ) . 'dist/assets/index-fb707c25.css', [], '1.0', 'all');
                 wp_localize_script('productimp_app-vue', 'ProductImp', [
                     'root' => esc_url_raw(rest_url()),
                     'nonce' => wp_create_nonce('wp_rest'),
