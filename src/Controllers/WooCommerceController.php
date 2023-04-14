@@ -84,6 +84,9 @@ class WooCommerceController {
             json_decode($product, true)
         );
 
+        var_dump($data);
+        die;
+
         global $wpdb;
 
         $table = $wpdb->prefix . $this->table;
@@ -133,7 +136,7 @@ class WooCommerceController {
         global $wpdb;
         $table = $wpdb->prefix . $this->table;
 
-        $response = $wpdb->get_row($wpdb->prepare("SELECT id, product_id, woocommerce_product_id FROM wp_pi_products_woocommerce WHERE product_id = %d", $request['product_id']));
+        $response = $wpdb->get_row($wpdb->prepare("SELECT id, product_id, woocommerce_product_id FROM $table WHERE product_id = %d", $request['product_id']));
 
         return  new \WP_REST_Response(
             [
@@ -168,23 +171,20 @@ class WooCommerceController {
                 $selectors = explode(".", $value['product_field_id']);
 
                 if($value['woocommerce_field_id'] === 'images') {
-                    // var_dump($product[$selectors[0]][$selectors[1]]);
                     foreach($product[$selectors[0]][$selectors[1]] as $key => $image) {
                         $data['images'][$key]['src'] = $image;
-                        // var_dump($value);
-                        // if($this->checkExists($image)) {
-                        //     $data['images'][$key]['src'] = $image;
-                        // }
                     }
+
+                    // Unset the fields so that they do not get mapped twice.
                     unset($value['product_field_id']);
                     unset($value['woocommerce_field_id']);
                 }
             }
      
-            // // Hardcode
-            // if(preg_match('/\{\w*\}/', $value['product_field_id'])) {
-            //     $data[$value['woocommerce_field_id']] = str_replace(['{', '}'], '', $value['product_field_id']);
-            // }
+            // Hardcode
+            if(preg_match('/\{\w*\}/', $value['product_field_id'])) {
+                $data[$value['woocommerce_field_id']] = str_replace(['{', '}'], '', $value['product_field_id']);
+            }
      
             $data[$value['woocommerce_field_id']] = (string) $product[$value['product_field_id']] ?? null;
         }
